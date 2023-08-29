@@ -2,14 +2,17 @@
  * @Author: wuxs 317009160@qq.com
  * @Date: 2023-08-10 12:57:27
  * @LastEditors: wuxs 317009160@qq.com
- * @LastEditTime: 2023-08-29 13:11:08
+ * @LastEditTime: 2023-08-29 14:37:03
  * @FilePath: \ehr-console-pcd:\studio\vue-project\vue3-plugin-effect-vite-admin-element-plus\src\views\Directive\Disabled.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
-import { ElTabs, ElTabPane } from 'element-plus'
+import { ElTabs, ElTabPane, ElButton } from 'element-plus'
 import { setContentFull, getViewportOffset } from '@/utils/domUtils'
-import { gsap } from 'gsap'
+import { getTestFiles } from '@/api/files'
+import { downloadFile } from '@/api/common'
+import gsap from 'gsap'
+import { downloadZip } from '@/utils/download'
 const tabList = [
   {
     label: '项目概览',
@@ -75,7 +78,14 @@ function animateTo() {
   )
 }
 
-onMounted(() => {
+const files = ref([])
+function download() {
+  downloadZip(files.value, 'url', 'aaa', downloadFile)
+}
+onMounted(async () => {
+  const res = await getTestFiles()
+  files.value = res.data
+
   gsap.fromTo(
     '.el-tabs__item:first-child',
     { x: -100, opacity: 0 },
@@ -92,7 +102,14 @@ onMounted(() => {
     <div class="el-tab">
       <ElTabs v-model="activeName" @click="handleClick">
         <ElTabPane v-for="tab in tabList" :key="tab.value" :label="tab.label">
-          <div class="el-tabs__item"> {{ tab.compName }}</div>
+          <div class="card">
+            <ul>
+              <li v-for="(file, index) in files" :key="index">
+                {{ file.url }}
+              </li>
+              <ElButton type="primary" @click="download">download zip</ElButton>
+            </ul>
+          </div>
         </ElTabPane>
       </ElTabs>
     </div>

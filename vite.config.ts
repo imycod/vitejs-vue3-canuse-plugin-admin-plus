@@ -16,6 +16,8 @@ import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-i
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
+import { config } from "./src/config/axios/config"
 // https://vitejs.dev/config/
 const root = process.cwd()
 
@@ -26,8 +28,6 @@ function pathResolve(dir: string) {
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   let env = {} as any
   const isBuild = command === 'build'
-
-  console.log('isBuild------>', isBuild);
 
   if (!isBuild) {
     env = loadEnv((process.argv[3] === '--mode' ? process.argv[4] : process.argv[3]), root)
@@ -142,6 +142,16 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 4000,
       proxy: {
         // 选项写法
+        [`/${config.brand}`]: {
+          target: config.domain,
+          changeOrigin: true,
+          rewrite: path => {
+            return path.replace(new RegExp(`^\/${config.brand}`), '')
+          },
+          headers: {
+            Referer: '',
+          }
+        },
         '/api': {
           target: 'http://127.0.0.1:8000',
           changeOrigin: true,

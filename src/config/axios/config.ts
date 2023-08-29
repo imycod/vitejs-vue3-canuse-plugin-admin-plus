@@ -1,4 +1,4 @@
-const config: {
+type ConfigType = {
   base_url: {
     base: string
     dev: string
@@ -8,7 +8,11 @@ const config: {
   result_code: number | string
   default_headers: AxiosHeaders
   request_timeout: number
-} = {
+  brand: string
+  domain: string
+}
+
+const config: ConfigType = {
   /**
    * api请求基础路径
    */
@@ -40,7 +44,14 @@ const config: {
    * 默认接口请求类型
    * 可选值：application/x-www-form-urlencoded multipart/form-data
    */
-  default_headers: 'application/json'
+  default_headers: 'application/json',
+
+  /**
+   * 域名,下载会跨域,需要加上域名，以及代理
+   * 根据要下载的文件的域名来设置
+   */
+  brand: 'baidu',
+  domain: 'https://www.baidu.com'
 }
 
 export { config }
