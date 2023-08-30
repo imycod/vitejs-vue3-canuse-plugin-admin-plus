@@ -156,7 +156,8 @@ export default {
     digital: '数字',
     list: '列表',
     starter: '开始',
-    tab: '选项卡'
+    tab: '选项卡',
+    flip: 'flip'
   },
   permission: {
     hasPermission: '请设置操作权限值'

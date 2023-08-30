@@ -672,6 +672,14 @@ export const effectRouterMap: AppRouteRecordRaw[] = [
         meta: {
           title: t('router.tab')
         }
+      },
+      {
+        path: 'flip',
+        component: () => import('@/views/Gsap/Flip/Index.vue'),
+        name: 'Flip',
+        meta: {
+          title: t('router.flip')
+        }
       }
     ]
   }

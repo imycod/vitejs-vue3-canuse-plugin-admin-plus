@@ -82,6 +82,21 @@ export function removeClass(el: Element, cls: string) {
   }
 }
 
+export function toggleClass(el, className) {
+  if (!el || !className) return
+  if (el.classList) {
+    el.classList.toggle(className)
+  } else {
+    const classes = el.className.split(' ')
+    const existingIndex = classes.indexOf(className)
+
+    if (existingIndex >= 0) classes.splice(existingIndex, 1)
+    else classes.push(className)
+
+    el.className = classes.join(' ')
+  }
+}
+
 export function getBoundingClientRect(element: Element): DOMRect | number {
   if (!element || !element.getBoundingClientRect) {
     return 0
@@ -173,43 +188,43 @@ export const once = function (el: HTMLElement, event: string, fn: EventListener)
 export const getStyle =
   ieVersion < 9
     ? function (element: Element | any, styleName: string) {
-        if (isServer) return
-        if (!element || !styleName) return null
-        styleName = camelCase(styleName)
-        if (styleName === 'float') {
-          styleName = 'styleFloat'
-        }
-        try {
-          switch (styleName) {
-            case 'opacity':
-              try {
-                return element.filters.item('alpha').opacity / 100
-              } catch (e) {
-                return 1.0
-              }
-            default:
-              return element.style[styleName] || element.currentStyle
-                ? element.currentStyle[styleName]
-                : null
-          }
-        } catch (e) {
-          return element.style[styleName]
-        }
+      if (isServer) return
+      if (!element || !styleName) return null
+      styleName = camelCase(styleName)
+      if (styleName === 'float') {
+        styleName = 'styleFloat'
       }
+      try {
+        switch (styleName) {
+          case 'opacity':
+            try {
+              return element.filters.item('alpha').opacity / 100
+            } catch (e) {
+              return 1.0
+            }
+          default:
+            return element.style[styleName] || element.currentStyle
+              ? element.currentStyle[styleName]
+              : null
+        }
+      } catch (e) {
+        return element.style[styleName]
+      }
+    }
     : function (element: Element | any, styleName: string) {
-        if (isServer) return
-        if (!element || !styleName) return null
-        styleName = camelCase(styleName)
-        if (styleName === 'float') {
-          styleName = 'cssFloat'
-        }
-        try {
-          const computed = (document as any).defaultView.getComputedStyle(element, '')
-          return element.style[styleName] || computed ? computed[styleName] : null
-        } catch (e) {
-          return element.style[styleName]
-        }
+      if (isServer) return
+      if (!element || !styleName) return null
+      styleName = camelCase(styleName)
+      if (styleName === 'float') {
+        styleName = 'cssFloat'
       }
+      try {
+        const computed = (document as any).defaultView.getComputedStyle(element, '')
+        return element.style[styleName] || computed ? computed[styleName] : null
+      } catch (e) {
+        return element.style[styleName]
+      }
+    }
 
 /* istanbul ignore next */
 export function setStyle(element: Element | any, styleName: any, value: any) {
@@ -304,4 +319,62 @@ export const getOffsetTop = (el: Element) => {
 export const setContentFull = (el: Element) => {
   const elOffsetTop = getOffsetTop(el)
   el.style.height = `calc(100vh - ${elOffsetTop}px - var(--app-footer-height) - var(--app-content-padding))`
+}
+
+interface FlipOptions {
+  duration?: number
+}
+
+/**
+ * Flip 动画思想 first last invert 反转 first-last play
+ * use: new Flip(elements, { duration: 1000 }) 
+ * @param elements
+ * 改变元素位置后
+ * f.play
+ */
+export class Flip {
+  private elements: HTMLElement[]
+  private options: FlipOptions
+
+  constructor(elements: HTMLElement[], options?: FlipOptions) {
+    this.elements = elements
+    this.options = options || {}
+
+    this.init()
+  }
+
+  private init(): void {
+    if (!this.elements || this.elements.length === 0) {
+      return
+    }
+
+    for (const element of this.elements) {
+      const rects = element.getBoundingClientRect()
+      // 可以在这里收集first一开始的位置
+      element.setAttribute("data-custom-y", rects.y);
+    }
+  }
+
+  public play(): void {
+    if (!this.elements || this.elements.length === 0) {
+      return
+    }
+
+    // const { duration = 1000 } = this.options
+    // const easeInOutCubic = (t: number): number =>
+    //   t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
+    // 改变完位置可以在这里invert 
+    for (let index = 0; index < this.elements.length; index++) {
+      const element = this.elements[index];
+      const rects = element.getBoundingClientRect()
+      const Y = element.getAttribute("data-custom-y")
+      const { y: last } = rects
+   
+      const invert = Y - last
+      element.animate([{ transform: `translateY(${invert}px)` }, { transform: 'translateY(0)' }], {
+        duration: 400,
+        easing: 'cubic-bezier(0.68, -0.55, 0.27, 0.65)'
+      })
+    }
+  }
 }

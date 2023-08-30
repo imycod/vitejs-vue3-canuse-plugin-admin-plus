@@ -155,9 +155,9 @@ export default {
     gsap: 'Gsap',
     digital: 'Digital',
     list: 'List',
-    table: 'Table',
     starter: 'Starter',
-    tab: 'Tab'
+    tab: 'Tab',
+    flip: 'Flip'
   },
   permission: {
     hasPermission: 'Please set the operation permission value'

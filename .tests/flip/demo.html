@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box {
+            background-color: #f60;
+            color: #fff;
+            width: 100px;
+            height: 100px;
+        }
+
+        li {
+            width: 400px;
+            height: 50px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <ul id="ul">
+            <li v-for="v in list">{{v}}</li>
+        </ul>
+        <button @click="move">move</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+
+        function Flip(elements) {
+            this.elements = elements
+            // this.first = []
+            // this.last = []
+            for (const element of elements) {
+                const rects = element.getBoundingClientRect()
+                // this.first.push(rects)
+                element.setAttribute("data-custom-y", rects.y);
+            }
+
+            console.log(this.first);
+
+        }
+        Flip.prototype.play = function () {
+            // 改变完记录位置，在里反转
+            for (let index = 0; index < this.elements.length; index++) {
+                const element = this.elements[index];
+                const rects = element.getBoundingClientRect()
+                // this.last.push(rects)
+                const Y = element.getAttribute("data-custom-y")
+                console.log(Y);
+                const { y: last } = rects
+                // const rect = this.first[index]
+                // const { top: first } = rect
+                // const invert = first - last
+                // console.log(invert);
+                console.log({ Y, last });
+                const invert = Y - last
+                element.animate([{ transform: `translateY(${invert}px)` }, { transform: 'translateY(0)' }], {
+                    duration: 400,
+                    easing: 'cubic-bezier(0.68, -0.55, 0.27, 0.65)'
+                })
+            }
+            console.log(this.last);
+
+        }
+
+        new Vue({
+            el: '#app',
+            data: {
+                list: [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    '5',
+                ],
+                f: null,
+            },
+            methods: {
+                move() {
+                    const container = document.querySelector('ul')
+                    this.f = new Flip(container.children)
+                    let index = 0
+                    let len = this.list.length - 1
+                    while (index < len) {
+                        const before = container.children[index]
+                        const end = container.children[len - index]
+                        container.insertBefore(before, end)
+                        container.insertBefore(end, before)
+                        index++
+                    }
+                    this.f.play()
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

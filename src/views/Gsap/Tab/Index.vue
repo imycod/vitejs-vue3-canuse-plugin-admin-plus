@@ -2,13 +2,13 @@
  * @Author: wuxs 317009160@qq.com
  * @Date: 2023-08-10 12:57:27
  * @LastEditors: wuxs 317009160@qq.com
- * @LastEditTime: 2023-08-29 14:37:03
+ * @LastEditTime: 2023-08-29 16:42:50
  * @FilePath: \ehr-console-pcd:\studio\vue-project\vue3-plugin-effect-vite-admin-element-plus\src\views\Directive\Disabled.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
 import { ElTabs, ElTabPane, ElButton } from 'element-plus'
-import { setContentFull, getViewportOffset } from '@/utils/domUtils'
+import { setContentFull, getViewportOffset, toggleClass } from '@/utils/domUtils'
 import { getTestFiles } from '@/api/files'
 import { downloadFile } from '@/api/common'
 import gsap from 'gsap'
@@ -66,7 +66,9 @@ const tabList = [
   }
 ]
 const activeName = ref('0')
-async function handleClick() {
+async function tabClick(event) {
+  // event.stopPropagation()
+  // event.preventDefault()
   animateTo()
 }
 
@@ -95,12 +97,16 @@ onMounted(async () => {
   setContentFull(elContainer)
   console.log(getViewportOffset(elContainer))
 })
+
+function favHeartClick() {
+  toggleClass(document.querySelector('.js-fav > .heart'), 'is-active')
+}
 </script>
 
 <template>
   <ContentWrap>
     <div class="el-tab">
-      <ElTabs v-model="activeName" @click="handleClick">
+      <ElTabs v-model="activeName" @tab-click="tabClick">
         <ElTabPane v-for="tab in tabList" :key="tab.value" :label="tab.label">
           <div class="card">
             <ul>
@@ -110,8 +116,55 @@ onMounted(async () => {
               <ElButton type="primary" @click="download">download zip</ElButton>
             </ul>
           </div>
+
+          <button class="product-slider__fav js-fav" @click="favHeartClick">
+            <span class="heart"></span>
+            ADD TO WISHLIST
+          </button>
         </ElTabPane>
       </ElTabs>
     </div>
   </ContentWrap>
 </template>
+
+<style lang="less" scoped>
+.product-slider {
+  text-align: center;
+  &__fav {
+    color: #888e94;
+    background: none;
+    border: none;
+    position: relative;
+    padding-left: 25px;
+    left: 0px;
+    outline: none;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+
+    .heart {
+      display: block;
+      position: absolute;
+      left: 0;
+      transform: translate(-50%, -50%) scale(0.7);
+      top: 50%;
+      pointer-events: none;
+      width: 100px;
+      height: 100px;
+      background: url('https://res.cloudinary.com/muhammederdem/image/upload/v1536405215/starwars/heart.png')
+        no-repeat;
+      background-position: 0 0;
+      cursor: pointer;
+      transition: background-position 1s steps(28);
+      transition-duration: 0s;
+
+      &.is-active {
+        transition-duration: 1s;
+        background-position: -2800px 0;
+      }
+    }
+  }
+}
+</style>
