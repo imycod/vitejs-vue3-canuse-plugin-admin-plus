@@ -4,3 +4,33 @@
 // .dark .dark\:text-color {
 //   color: rgba(255, 255, 255, var(--dark-text-color));
 // }
+
+.h-auto {
+    height: 100% !important;
+}
+
+.layout {
+    &-theme-view {
+        background: var(--el-color-white);
+        width: 100%;
+        border-radius: 4px;
+        border: 1px solid var(--el-border-color-light, #ebeef5);
+    }
+
+    &-padding-auto {
+        padding: 10px;
+    }
+
+    &-container {
+        height: calc(100vh - var(--top-tool-height) - var(--tags-view-height) - var(--app-content-padding) - var(--app-footer-height) - 20px) !important
+    }
+
+    &-flex-full-view {
+
+        overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+}

@@ -157,7 +157,9 @@ export default {
     list: 'List',
     starter: 'Starter',
     tab: 'Tab',
-    flip: 'Flip'
+    flip: 'Flip',
+    animation: 'Animation',
+    layout: 'layout'
   },
   permission: {
     hasPermission: 'Please set the operation permission value'

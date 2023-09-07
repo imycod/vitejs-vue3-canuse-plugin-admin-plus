@@ -7,6 +7,7 @@ import { ElButton } from 'element-plus'
 import { useValidator } from '@/hooks/web/useValidator'
 import { getDictOneApi } from '@/api/common'
 import { FormSchema } from '@/types/form'
+import { createChunk, fileInchunksForWorker } from './index'
 
 const { required } = useValidator()
 
@@ -228,6 +229,77 @@ const getDictOne = async () => {
     ])
   }
 }
+
+async function createChunkInWorker(file) {
+  const CHUNK_SIZE = 1024 * 1024 * 5
+  const THREAD_COUNT = 1
+  let finishCount = 0
+  let result = []
+
+  return new Promise((resolve) => {
+    // 一共分几片
+    const totalChunkCount = Math.ceil(file.size / CHUNK_SIZE)
+    // 每个worker要计算多少chunk
+    const workerChunkCount = Math.ceil(totalChunkCount / THREAD_COUNT)
+    for (let index = 0; index < THREAD_COUNT; index++) {
+      const worker = new Worker('worker.js', {
+        type: 'module'
+      })
+      // 109 -> 4 -> [0...28] [28...56] [56...84] [84...109]
+      // 第几个线程 * 每个线程分到的数量
+      const startIndex = index * workerChunkCount
+      let endIndex = startIndex + workerChunkCount
+      if (endIndex > totalChunkCount) {
+        endIndex = totalChunkCount
+      }
+      console.log('worker---', worker)
+
+      console.log({
+        file,
+        CHUNK_SIZE,
+        startIndex,
+        endIndex
+      })
+
+      worker.postMessage({
+        file,
+        CHUNK_SIZE,
+        startIndex,
+        endIndex
+      })
+
+      worker.onmessage = (e) => {
+        // 线程顺序要注意，
+        for (let i = startIndex; i < endIndex; i++) {
+          result[i] = e.data[i - startIndex]
+        }
+        // 什么时候我这个分片全部结束了
+        worker.terminate()
+        finishCount++
+        if (finishCount === THREAD_COUNT) {
+          console.log('result---->', result)
+          resolve(result)
+        }
+      }
+      // 监听 Web Worker 错误事件
+      worker.onerror = (error) => {
+        console.error('Web Worker error:', error)
+      }
+    }
+  })
+}
+
+async function handleChange(event) {
+  const file = event.target.files[0]
+  if (file) {
+    console.time('createChunkInWorker')
+    // const chunks = await createChunk(file)
+    const chunks = await createChunkInWorker(file)
+
+    console.timeEnd('createChunkInWorker')
+    console.log(chunks)
+  }
+}
 </script>
 
 <template>
@@ -266,5 +338,9 @@ const getDictOne = async () => {
   </ContentWrap>
   <ContentWrap :title="`RefForm ${t('formDemo.example')}`">
     <Form :schema="schema" ref="formRef" />
+  </ContentWrap>
+
+  <ContentWrap :title="`大文件上传分片worker`">
+    <input type="file" @change="handleChange" />
   </ContentWrap>
 </template>

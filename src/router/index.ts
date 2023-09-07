@@ -591,7 +591,7 @@ export const effectRouterMap: AppRouteRecordRaw[] = [
   },
   {
     path: '/css3',
-    component: Block,
+    component: Layout,
     name: 'Css3',
     meta: {
       title: t('router.css3')
@@ -603,6 +603,14 @@ export const effectRouterMap: AppRouteRecordRaw[] = [
         name: 'ScrollSnap',
         meta: {
           title: t('router.scrollsnap')
+        }
+      },
+      {
+        path: 'animation',
+        component: () => import('@/views/CSS3/Animation/Index.vue'),
+        name: 'Animation',
+        meta: {
+          title: t('router.animation')
         }
       }
     ]
@@ -658,14 +666,6 @@ export const effectRouterMap: AppRouteRecordRaw[] = [
         }
       },
       {
-        path: 'table',
-        component: () => import('@/views/Gsap/Table/Index.vue'),
-        name: 'Table',
-        meta: {
-          title: t('router.table')
-        }
-      },
-      {
         path: 'tab',
         component: () => import('@/views/Gsap/Tab/Index.vue'),
         name: 'Tab',
@@ -679,6 +679,32 @@ export const effectRouterMap: AppRouteRecordRaw[] = [
         name: 'Flip',
         meta: {
           title: t('router.flip')
+        }
+      }
+    ]
+  },
+  {
+    path: '/layouts',
+    component: Layout,
+    name: 'Layout',
+    meta: {
+      title: t('router.layout')
+    },
+    children: [
+      {
+        path: 'table',
+        component: () => import('@/views/Layout/Table/Index.vue'),
+        name: 'Table1',
+        meta: {
+          title: t('router.table')
+        }
+      },
+      {
+        path: 'table1',
+        component: () => import('@/views/Layout/Table/Index1.vue'),
+        name: 'Table2',
+        meta: {
+          title: t('router.table')
         }
       }
     ]

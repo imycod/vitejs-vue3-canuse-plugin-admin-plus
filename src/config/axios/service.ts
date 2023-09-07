@@ -14,12 +14,19 @@ import { ElMessage } from 'element-plus'
 
 const { result_code, base_url } = config
 
+import { getRefreshTokenApi, isRefreshRequest } from '@/api/login'
+
+import { getToken, setToken, setRefreshToken, getRefreshToken } from '@/utils/token'
+
 export const PATH_URL = base_url[import.meta.env.VITE_API_BASEPATH]
 
 // 创建axios实例
 const service: AxiosInstance = axios.create({
   baseURL: PATH_URL, // api 的 base_url
-  timeout: config.request_timeout // 请求超时时间
+  timeout: config.request_timeout, // 请求超时时间
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  }
 })
 
 // request拦截器
@@ -58,12 +65,32 @@ service.interceptors.request.use(
 
 // response 拦截器
 service.interceptors.response.use(
-  (response: AxiosResponse<any>) => {
+  async (response: AxiosResponse<any>) => {
+    if (response.headers.authorization) {
+      const token = response.headers.authorization.replace('Bearer ', '')
+      setToken(token)
+      service.defaults.headers.Authorization = `Bearer ${token}`
+    }
+    if (response.headers.refreshtoken) {
+      const token = response.headers.refreshtoken.replace('Bearer ', '')
+      setRefreshToken(token)
+    }
     if (response.config.responseType === 'blob') {
       // 如果是文件流，直接过
       return response
     } else if (response.data.code === result_code) {
       return response.data
+    } else if (response.data.code === 401 && !isRefreshRequest(response.config)) {
+      // 刷新token （token有过期事件，用refreshToken去换token）&& 当前的请求不是针对刷新token的请求
+      const isSuccess = await getRefreshTokenApi()
+      if (isSuccess) {
+        response.config.headers.Authorization = `Bearer ${getToken()}`
+        // 有新的token就重新请求
+        const resp = await service.request(response.config)
+        return resp
+      } else {
+        console.log('跳转登录页')
+      }
     } else {
       ElMessage.error(response.data.message)
     }

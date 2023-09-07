@@ -157,7 +157,9 @@ export default {
     list: '列表',
     starter: '开始',
     tab: '选项卡',
-    flip: 'flip'
+    flip: 'flip',
+    animation: '自定义动画',
+    layout: '布局'
   },
   permission: {
     hasPermission: '请设置操作权限值'

@@ -2,12 +2,12 @@
  * @Author: wuxs 317009160@qq.com
  * @Date: 2023-08-30 09:40:55
  * @LastEditors: wuxs 317009160@qq.com
- * @LastEditTime: 2023-08-30 13:16:24
+ * @LastEditTime: 2023-08-30 15:31:27
  * @FilePath: \vue3-plugin-effect-vite-admin-element-plus\src\views\Gsap\Flip\Index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div class="my-flip-list">
+  <div class="bd">
     <ElButton type="primary" @click="inserBefore">insetBefore</ElButton>
     <ul class="row-container">
       <li class="row" :class="f.isActive ? 'is-active' : null" v-for="(f, i) in frameworks" :key="i"
@@ -56,7 +56,8 @@ function inserBefore() {
 }
 </script>
 <style lang="less" scoped>
-.my-flip-list {
+.bd {
+  border: 1px solid #000;
   .row {
     width: 500px;
     padding: 10px;

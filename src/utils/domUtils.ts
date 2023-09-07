@@ -1,5 +1,6 @@
 import exp from 'constants'
 import { isServer } from './is'
+import { de } from 'element-plus/es/locale'
 const ieVersion = isServer ? 0 : Number((document as any).documentMode)
 const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g
 const MOZ_HACK_REGEXP = /^moz([A-Z])/
@@ -188,43 +189,43 @@ export const once = function (el: HTMLElement, event: string, fn: EventListener)
 export const getStyle =
   ieVersion < 9
     ? function (element: Element | any, styleName: string) {
-      if (isServer) return
-      if (!element || !styleName) return null
-      styleName = camelCase(styleName)
-      if (styleName === 'float') {
-        styleName = 'styleFloat'
-      }
-      try {
-        switch (styleName) {
-          case 'opacity':
-            try {
-              return element.filters.item('alpha').opacity / 100
-            } catch (e) {
-              return 1.0
-            }
-          default:
-            return element.style[styleName] || element.currentStyle
-              ? element.currentStyle[styleName]
-              : null
+        if (isServer) return
+        if (!element || !styleName) return null
+        styleName = camelCase(styleName)
+        if (styleName === 'float') {
+          styleName = 'styleFloat'
         }
-      } catch (e) {
-        return element.style[styleName]
+        try {
+          switch (styleName) {
+            case 'opacity':
+              try {
+                return element.filters.item('alpha').opacity / 100
+              } catch (e) {
+                return 1.0
+              }
+            default:
+              return element.style[styleName] || element.currentStyle
+                ? element.currentStyle[styleName]
+                : null
+          }
+        } catch (e) {
+          return element.style[styleName]
+        }
       }
-    }
     : function (element: Element | any, styleName: string) {
-      if (isServer) return
-      if (!element || !styleName) return null
-      styleName = camelCase(styleName)
-      if (styleName === 'float') {
-        styleName = 'cssFloat'
+        if (isServer) return
+        if (!element || !styleName) return null
+        styleName = camelCase(styleName)
+        if (styleName === 'float') {
+          styleName = 'cssFloat'
+        }
+        try {
+          const computed = (document as any).defaultView.getComputedStyle(element, '')
+          return element.style[styleName] || computed ? computed[styleName] : null
+        } catch (e) {
+          return element.style[styleName]
+        }
       }
-      try {
-        const computed = (document as any).defaultView.getComputedStyle(element, '')
-        return element.style[styleName] || computed ? computed[styleName] : null
-      } catch (e) {
-        return element.style[styleName]
-      }
-    }
 
 /* istanbul ignore next */
 export function setStyle(element: Element | any, styleName: any, value: any) {
@@ -327,7 +328,7 @@ interface FlipOptions {
 
 /**
  * Flip 动画思想 first last invert 反转 first-last play
- * use: new Flip(elements, { duration: 1000 }) 
+ * use: new Flip(elements, { duration: 1000 })
  * @param elements
  * 改变元素位置后
  * f.play
@@ -351,11 +352,12 @@ export class Flip {
     for (const element of this.elements) {
       const rects = element.getBoundingClientRect()
       // 可以在这里收集first一开始的位置
-      element.setAttribute("data-custom-y", rects.y);
+      element.setAttribute('data-custom-y', rects.y)
     }
+    console.log(this.elements)
   }
 
-  public play(): void {
+  public async play(): void {
     if (!this.elements || this.elements.length === 0) {
       return
     }
@@ -363,13 +365,14 @@ export class Flip {
     // const { duration = 1000 } = this.options
     // const easeInOutCubic = (t: number): number =>
     //   t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2
-    // 改变完位置可以在这里invert 
+    // 改变完位置可以在这里invert
+    await nextTick()
     for (let index = 0; index < this.elements.length; index++) {
-      const element = this.elements[index];
+      const element = this.elements[index]
       const rects = element.getBoundingClientRect()
-      const Y = element.getAttribute("data-custom-y")
+      const Y = element.getAttribute('data-custom-y')
       const { y: last } = rects
-   
+
       const invert = Y - last
       element.animate([{ transform: `translateY(${invert}px)` }, { transform: 'translateY(0)' }], {
         duration: 400,

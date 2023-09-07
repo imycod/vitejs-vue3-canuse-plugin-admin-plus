@@ -269,7 +269,7 @@ export default defineComponent({
     }
 
     return () => (
-      <div v-loading={unref(getProps).loading}>
+      <div class="overflow-hidden flex flex-1 flex-col" v-loading={unref(getProps).loading}>
         <ElTable
           // @ts-ignore
           ref={elTableRef}
@@ -296,3 +296,14 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="less" scoped>
+:deep(.el-table) {
+  height: calc(100% - 47px) !important;
+
+  .el-table__inner-wrapper {
+    height: 100% !important;
+    overflow: auto;
+  }
+}
+</style>
