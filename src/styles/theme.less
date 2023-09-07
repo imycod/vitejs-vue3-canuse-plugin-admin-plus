@@ -26,11 +26,17 @@
     }
 
     &-flex-full-view {
-
         overflow: hidden;
 
         display: flex;
         flex-direction: column;
         flex: 1;
     }
+}
+
+.layout-full-col {
+    @apply layout-theme-view;
+    @apply layout-padding-auto;
+    @apply layout-container;
+    @apply layout-flex-full-view;
 }
