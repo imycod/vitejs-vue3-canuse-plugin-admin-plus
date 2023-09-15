@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes mu-skeleton-loading {
+            0% {
+                background-position: 100% 50%;
+            }
+
+            to {
+                background-position: 0 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        {{loading1}} - {{loading2}} - {{loading3}}
+        <div>
+            <el-timeline>
+                <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
+                    <div v-skeleton:skeletonSection1="loading1">
+                        <span v-skeleton-item>{{activity.name}}</span>
+                        <span v-skeleton-item style="margin: 0px 12px;">{{activity.type}}</span>
+                        <a v-skeleton-item :href="activity.contentUrl" target="_blank">{{activity.content}}</a>
+                    </div>
+                </el-timeline-item>
+            </el-timeline>
+            <hr>
+            <el-timeline>
+                <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
+                    <div v-skeleton:skeletonSection2="loading2">
+                        <span v-skeleton-item>{{activity.name}}</span>
+                        <span v-skeleton-item style="margin: 0px 12px;">{{activity.type}}</span>
+                        <a v-skeleton-item :href="activity.contentUrl" target="_blank">{{activity.content}}</a>
+                    </div>
+                </el-timeline-item>
+            </el-timeline>
+            <hr>
+            <el-timeline>
+                <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
+                    <div v-skeleton:skeletonSection3="loading3">
+                        <span v-skeleton-item>{{activity.name}}</span>
+                        <span v-skeleton-item style="margin: 0px 12px;">{{activity.type}}</span>
+                        <a v-skeleton-item :href="activity.contentUrl" target="_blank">{{activity.content}}</a>
+                    </div>
+                </el-timeline-item>
+            </el-timeline>
+        </div>
+
+    </div>
+    <!-- vue cdn -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- element-plus cdn -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.3/index.full.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.3/theme-chalk/index.css" rel="stylesheet">
+    <script>
+
+        const { createApp, ref, reactive, watchEffect, h, render, watch } = Vue
+
+        const skeletonStates = reactive({});
+        let index = 1
+        const Skeleton = {
+            mounted(el, binding) {
+                console.log('parent-------------->', index);
+                index += 1
+                const sectionId = binding.arg; // Get the unique identifier for the section
+                if (!skeletonStates[sectionId]) {
+                    skeletonStates[sectionId] = reactive({
+                        loading: binding.value,
+                        list: [],
+                    });
+                }
+
+                const sectionState = skeletonStates[sectionId];
+
+                const generateSkeletonElements = () => {
+                    sectionState.list.forEach((item) => {
+                        const skeletonEl = document.createElement('div');
+                        skeletonEl.classList.add('skeleton-element');
+                        skeletonEl.style.width = `${item.offsetWidth}px`;
+                        skeletonEl.style.height = `${item.offsetHeight}px`;
+
+                        item.parentNode.insertBefore(skeletonEl, item.nextSibling);
+                    });
+                };
+
+                const removeSkeletonElements = () => {
+                    const skeletonElements = document.querySelectorAll('.skeleton-element');
+                    skeletonElements.forEach((el) => el.parentNode.removeChild(el));
+                };
+
+                watchEffect(() => {
+                    if (sectionState.loading) {
+                        generateSkeletonElements();
+                    } else {
+                        removeSkeletonElements();
+                    }
+                });
+
+                // binding.instance.$watch(
+                //     binding.value,
+                //     (newValue) => {
+                //         sectionState.loading = newValue;
+                //     },
+                //     { immediate: true }
+                // );
+            },
+        }
+
+        const SkeletonItem = {
+            mounted(el, binding) {
+                const sectionState1 = skeletonStates['skeletonSection1'];
+                const sectionState2 = skeletonStates['skeletonSection2'];
+                const sectionState3 = skeletonStates['skeletonSection3'];
+                if (sectionState1) {
+                    console.log('sectionState--',sectionState1);
+
+                }
+            }
+        }
+
+
+        const app = createApp({
+            setup() {
+                const loading1 = ref(true)
+                const loading2 = ref(true)
+                const loading3 = ref(true)
+                const activities = [
+                    {
+                        name: '岑国健',
+                        content: 'Event start',
+                        type: '新建',
+                        contentUrl: 'http://www.baidu.com',
+                        timestamp: '2018-04-15',
+                    },
+                    // {
+                    //     name: '岑国健',
+                    //     content: 'Approved',
+                    //     type: '新建',
+                    //     contentUrl: 'http://www.baidu.com',
+                    //     timestamp: '2018-04-13',
+                    // },
+                    // {
+                    //     name: '岑国健',
+                    //     content: 'Success',
+                    //     type: '新建',
+                    //     contentUrl: 'http://www.baidu.com',
+                    //     timestamp: '2018-04-11',
+                    // },
+                ]
+
+                setTimeout(() => {
+                    loading1.value = false
+                }, 2000)
+                setTimeout(() => {
+                    loading2.value = false
+                }, 4000)
+                setTimeout(() => {
+                    loading3.value = false
+                }, 6000)
+                return {
+                    activities,
+                    loading1,
+                    loading2,
+                    loading3,
+                }
+            }
+        })
+        app.use(ElementPlus, { size: 'small' })
+        app.directive('skeleton', Skeleton)
+        app.directive('skeleton-item', SkeletonItem)
+        app.mount('#app')
+    </script>
+</body>
+
+</html>

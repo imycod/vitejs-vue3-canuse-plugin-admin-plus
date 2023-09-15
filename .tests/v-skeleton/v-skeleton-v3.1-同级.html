@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes mu-skeleton-loading {
+            0% {
+                background-position: 100% 50%;
+            }
+
+            to {
+                background-position: 0 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div v-skeleton="loading1">
+            {{loading1}} - {{loading2}} - {{loading3}}
+            <el-timeline>
+                <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
+                    <div v-skeleton="loading1">
+                        <span v-skeleton-item>{{activity.name}} - 1</span>
+                        <span v-skeleton-item style="margin: 0px 12px;">{{activity.type}}</span>
+                        <a v-skeleton-item :href="activity.contentUrl" target="_blank">{{activity.content}}</a>
+                    </div>
+                </el-timeline-item>
+            </el-timeline>
+            <hr>
+            <el-timeline>
+                <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
+                    <div v-skeleton="loading2">
+                        <span v-skeleton-item>{{activity.name}} - 2</span>
+                        <span v-skeleton-item style="margin: 0px 12px;">{{activity.type}}</span>
+                        <a v-skeleton-item :href="activity.contentUrl" target="_blank">{{activity.content}}</a>
+                    </div>
+                </el-timeline-item>
+            </el-timeline>
+            <!--  <hr> -->
+             <el-timeline>
+                <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
+                    <div v-skeleton="loading3">
+                        <span v-skeleton-item>{{activity.name}} - 3</span>
+                        <span v-skeleton-item style="margin: 0px 12px;">{{activity.type}}</span>
+                        <a v-skeleton-item :href="activity.contentUrl" target="_blank">{{activity.content}}</a>
+                    </div>
+                </el-timeline-item>
+            </el-timeline> 
+            <!--  <el-timeline>
+                <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
+                    <div v-skeleton="loading4">
+                        <span v-skeleton-item>{{activity.name}} - 4</span>
+                        <span v-skeleton-item style="margin: 0px 12px;">{{activity.type}}</span>
+                        <a v-skeleton-item :href="activity.contentUrl" target="_blank">{{activity.content}}</a>
+                    </div>
+                </el-timeline-item>
+            </el-timeline> -->
+        </div>
+
+    </div>
+    <!-- vue cdn -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- element-plus cdn -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.3/index.full.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.3/theme-chalk/index.css" rel="stylesheet">
+    <script>
+
+        const { createApp, ref, reactive, watchEffect, h, render } = Vue
+
+        class Skeleton {
+            instance = null
+            instanceChild = null
+            $index = 0
+            $firstEls = []
+            nodeMap = reactive(new Map())
+            constructor() {
+                this._init()
+                this._run()
+            }
+            _init() {
+                this.instance = this._initInstance()
+                this.instanceChild = this._initChild()
+            }
+            _initInstance() {
+                const self = this
+                return {
+                    mounted(el, binding, vnode) {
+                        self.$index += 1
+                        vnode.$$index = self.$index
+                        let deps = self.nodeMap.get(self.$index)
+                        if (!deps) {
+                            const state = reactive({
+                                loading: false,
+                                list: []
+                            })
+                            state.loading = binding.value
+                            state.list = self.$firstEls
+                            self.$firstEls = []
+                            self.nodeMap.set(self.$index, {
+                                vnode,
+                                state,
+                                el,
+                            })
+                        }
+
+                    },
+                    updated(el, binding, vnode) {
+                        // console.log(vnode);
+                        // console.log(vnode.el.__vnode.$$index);
+
+                        const nodes = self.nodeMap.get(vnode.el.__vnode.$$index)
+                        nodes.state.loading = binding.value
+
+                        // console.log(nodes);
+                    },
+                    unmounted(el, binding) {
+                        const nodes = self.nodeMap.get(vnode.el.__vnode.$$index)
+                        nodes.state.loading = binding.value
+                    }
+                }
+            }
+            _initChild() {
+                const self = this
+                return {
+                    mounted(el, binding, vnode) {
+                        self.$firstEls.push(el)
+                    },
+                    unmounted(el, binding, vnode) {
+                        console.log('vnode unmounted---', vnode);
+                        // const i = state.list.indexOf(el)
+                        // if (i == -1) return
+                        // state.list.splice(i, 1)
+                    }
+                }
+            }
+
+            _run() {
+                watchEffect(() => {
+                    // 创建 vnode
+                    let children = []
+                    this.nodeMap.forEach((node) => {
+                        const child = node.state.list.map((el) => {
+                            return h('div', node.state.loading ? {
+                                style: {
+                                    position: 'absolute',
+                                    top: el.getBoundingClientRect().top + 'px',
+                                    left: el.getBoundingClientRect().left + 'px',
+                                    width: el.getBoundingClientRect().width + 'px',
+                                    height: el.getBoundingClientRect().height + 'px',
+                                    background: '#e5e5e5',
+                                    borderRadius: getComputedStyle(el).borderRadius,
+                                    animation: 'mu-skeleton-loading 1.4s ease infinite', // Animation
+                                    background: `linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%)`,
+                                    backgroundSize: `400% 100%`
+                                },
+                            } : null)
+                        });
+                        children.push(child)
+                    })
+
+                    console.log(children);
+                    const container = h('div', children)
+
+                    render(container, document.body)
+                })
+            }
+
+            install(app) {
+                app.directive('skeleton', this.instance)
+                app.directive('skeleton-item', this.instanceChild)
+            }
+
+        }
+
+        const app = createApp({
+            setup() {
+                const loading1 = ref(true)
+                const loading2 = ref(true)
+                const loading3 = ref(false)
+                const loading4 = ref(true)
+                const activities = [
+                    {
+                        name: '岑国健',
+                        content: 'Event start',
+                        type: '新建',
+                        contentUrl: 'http://www.baidu.com',
+                        timestamp: '2018-04-15',
+                    },
+                    {
+                        name: '岑国健',
+                        content: 'Approved',
+                        type: '新建',
+                        contentUrl: 'http://www.baidu.com',
+                        timestamp: '2018-04-13',
+                    },
+                    {
+                        name: '岑国健',
+                        content: 'Success',
+                        type: '新建',
+                        contentUrl: 'http://www.baidu.com',
+                        timestamp: '2018-04-11',
+                    },
+                ]
+
+                setTimeout(() => {
+                    loading1.value = false                
+                }, 1000)
+                setTimeout(() => {
+                    loading2.value = false
+                }, 2000)
+                setTimeout(() => {
+                    loading3.value = false
+                }, 8000)
+                setTimeout(() => {
+                    loading4.value = false
+                }, 8000)
+                return {
+                    activities,
+                    loading1,
+                    loading2,
+                    loading3,
+                    loading4,
+                }
+            }
+        })
+        app.use(ElementPlus, { size: 'small' })
+        app.use(new Skeleton())
+        app.mount('#app')
+    </script>
+</body>
+
+</html>
