@@ -34,9 +34,13 @@ import App from './App.vue'
 
 import './permission'
 
+import vsk from 'v-sk'
+
 // 创建实例
 const setupAll = async () => {
   const app = createApp(App)
+  
+  app.use(vsk)
 
   await setupI18n(app)
 
