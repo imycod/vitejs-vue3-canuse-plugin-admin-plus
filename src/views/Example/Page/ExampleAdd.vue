@@ -40,7 +40,10 @@ const save = async () => {
 </script>
 
 <template>
-  <ContentDetailWrap :title="t('exampleDemo.add')" @back="push('/example/example-page')">
+  <ContentDetailWrap
+    :title="t('exampleDemo.add')"
+    @back="push('/example/example-page')"
+  >
     <Write ref="writeRef" />
 
     <template #right>

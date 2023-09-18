@@ -6,13 +6,17 @@ interface TreeHelperConfig {
 const DEFAULT_CONFIG: TreeHelperConfig = {
   id: 'id',
   children: 'children',
-  pid: 'pid'
+  pid: 'pid',
 }
 
-const getConfig = (config: Partial<TreeHelperConfig>) => Object.assign({}, DEFAULT_CONFIG, config)
+const getConfig = (config: Partial<TreeHelperConfig>) =>
+  Object.assign({}, DEFAULT_CONFIG, config)
 
 // tree from list
-export const listToTree = <T = any>(list: any[], config: Partial<TreeHelperConfig> = {}): T[] => {
+export const listToTree = <T = any>(
+  list: any[],
+  config: Partial<TreeHelperConfig> = {}
+): T[] => {
   const conf = getConfig(config) as TreeHelperConfig
   const nodeMap = new Map()
   const result: T[] = []
@@ -29,7 +33,10 @@ export const listToTree = <T = any>(list: any[], config: Partial<TreeHelperConfi
   return result
 }
 
-export const treeToList = <T = any>(tree: any, config: Partial<TreeHelperConfig> = {}): T => {
+export const treeToList = <T = any>(
+  tree: any,
+  config: Partial<TreeHelperConfig> = {}
+): T => {
   config = getConfig(config)
   const { children } = config
   const result: any = [...tree]
@@ -98,7 +105,11 @@ export const findPath = <T = any>(
   return null
 }
 
-export const findPathAll = (tree: any, func: Fn, config: Partial<TreeHelperConfig> = {}) => {
+export const findPathAll = (
+  tree: any,
+  func: Fn,
+  config: Partial<TreeHelperConfig> = {}
+) => {
   config = getConfig(config)
   const path: any[] = []
   const list = [...tree]
@@ -172,7 +183,8 @@ export const treeMapEach = (
   data: any,
   { children = 'children', conversion }: { children?: string; conversion: Fn }
 ) => {
-  const haveChildren = Array.isArray(data[children]) && data[children].length > 0
+  const haveChildren =
+    Array.isArray(data[children]) && data[children].length > 0
   const conversionData = conversion(data) || {}
   if (haveChildren) {
     return {
@@ -180,13 +192,13 @@ export const treeMapEach = (
       [children]: data[children].map((i: number) =>
         treeMapEach(i, {
           children,
-          conversion
+          conversion,
         })
-      )
+      ),
     }
   } else {
     return {
-      ...conversionData
+      ...conversionData,
     }
   }
 }

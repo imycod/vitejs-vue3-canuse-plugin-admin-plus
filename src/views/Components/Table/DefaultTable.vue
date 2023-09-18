@@ -19,20 +19,20 @@ const columns: TableColumn[] = [
   {
     field: 'index',
     label: t('tableDemo.index'),
-    type: 'index'
+    type: 'index',
   },
   {
     field: 'title',
-    label: t('tableDemo.title')
+    label: t('tableDemo.title'),
   },
   {
     field: 'author',
-    label: t('tableDemo.author')
+    label: t('tableDemo.author'),
   },
   {
     field: 'display_time',
     label: t('tableDemo.displayTime'),
-    sortable: true
+    sortable: true,
   },
   {
     field: 'importance',
@@ -41,7 +41,12 @@ const columns: TableColumn[] = [
       return h(
         ElTag,
         {
-          type: cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'
+          type:
+            cellValue === 1
+              ? 'success'
+              : cellValue === 2
+              ? 'warning'
+              : 'danger',
         },
         () =>
           cellValue === 1
@@ -50,16 +55,16 @@ const columns: TableColumn[] = [
             ? t('tableDemo.good')
             : t('tableDemo.commonly')
       )
-    }
+    },
   },
   {
     field: 'pageviews',
-    label: t('tableDemo.pageviews')
+    label: t('tableDemo.pageviews'),
   },
   {
     field: 'action',
-    label: t('tableDemo.action')
-  }
+    label: t('tableDemo.action'),
+  },
 ]
 
 const loading = ref(true)
@@ -70,7 +75,7 @@ const getTableList = async (params?: Params) => {
   const res = await getTableListApi(
     params || {
       pageIndex: 1,
-      pageSize: 10
+      pageSize: 10,
     }
   )
     .catch(() => {})

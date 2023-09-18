@@ -20,31 +20,31 @@ const data = reactive({
   email: '502431556@qq.com',
   addr: '这是一个很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的地址',
   sex: '男',
-  certy: '3505831994xxxxxxxx'
+  certy: '3505831994xxxxxxxx',
 })
 
 const schema = reactive<DescriptionsSchema[]>([
   {
     field: 'username',
-    label: t('descriptionsDemo.username')
+    label: t('descriptionsDemo.username'),
   },
   {
     field: 'nickName',
-    label: t('descriptionsDemo.nickName')
+    label: t('descriptionsDemo.nickName'),
   },
   {
     field: 'phone',
-    label: t('descriptionsDemo.phone')
+    label: t('descriptionsDemo.phone'),
   },
   {
     field: 'email',
-    label: t('descriptionsDemo.email')
+    label: t('descriptionsDemo.email'),
   },
   {
     field: 'addr',
     label: t('descriptionsDemo.addr'),
-    span: 24
-  }
+    span: 24,
+  },
 ])
 
 const form = reactive({
@@ -52,7 +52,7 @@ const form = reactive({
   nickName: '',
   phone: '',
   email: '',
-  addr: ''
+  addr: '',
 })
 
 const rules = reactive({
@@ -60,7 +60,7 @@ const rules = reactive({
   nickName: [required()],
   phone: [required()],
   email: [required()],
-  addr: [required()]
+  addr: [required()],
 })
 
 const { register, elFormRef } = useForm()
@@ -81,7 +81,12 @@ const formValidation = () => {
   />
 
   <Form is-custom :model="form" :rules="rules" @register="register">
-    <Descriptions :title="t('descriptionsDemo.form')" :data="data" :schema="schema" class="mt-20px">
+    <Descriptions
+      :title="t('descriptionsDemo.form')"
+      :data="data"
+      :schema="schema"
+      class="mt-20px"
+    >
       <template #username-label="{ row }">
         <span class="is-required--item">{{ row.label }}</span>
       </template>
@@ -125,7 +130,9 @@ const formValidation = () => {
       </template>
     </Descriptions>
     <div class="text-center mt-10px">
-      <ElButton @click="formValidation"> {{ t('formDemo.formValidation') }} </ElButton>
+      <ElButton @click="formValidation">
+        {{ t('formDemo.formValidation') }}
+      </ElButton>
     </div>
   </Form>
 </template>

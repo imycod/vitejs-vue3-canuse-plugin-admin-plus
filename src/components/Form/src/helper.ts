@@ -15,28 +15,41 @@ const { t } = useI18n()
  */
 export const setTextPlaceholder = (schema: FormSchema): PlaceholderMoel => {
   const textMap = ['Input', 'Autocomplete', 'InputNumber', 'InputPassword']
-  const selectMap = ['Select', 'TimePicker', 'DatePicker', 'TimeSelect', 'TimeSelect']
+  const selectMap = [
+    'Select',
+    'TimePicker',
+    'DatePicker',
+    'TimeSelect',
+    'TimeSelect',
+  ]
   if (textMap.includes(schema?.component as string)) {
     return {
-      placeholder: t('common.inputText')
+      placeholder: t('common.inputText'),
     }
   }
   if (selectMap.includes(schema?.component as string)) {
     // 一些范围选择器
-    const twoTextMap = ['datetimerange', 'daterange', 'monthrange', 'datetimerange', 'daterange']
+    const twoTextMap = [
+      'datetimerange',
+      'daterange',
+      'monthrange',
+      'datetimerange',
+      'daterange',
+    ]
     if (
       twoTextMap.includes(
-        (schema?.componentProps?.type || schema?.componentProps?.isRange) as string
+        (schema?.componentProps?.type ||
+          schema?.componentProps?.isRange) as string
       )
     ) {
       return {
         startPlaceholder: t('common.startTimeText'),
         endPlaceholder: t('common.endTimeText'),
-        rangeSeparator: '-'
+        rangeSeparator: '-',
       }
     } else {
       return {
-        placeholder: t('common.selectText')
+        placeholder: t('common.selectText'),
       }
     }
   }
@@ -59,9 +72,9 @@ export const setGridProp = (col: ColProps = {}): ColProps => {
           sm: 12,
           md: 12,
           lg: 12,
-          xl: 12
+          xl: 12,
         }),
-    ...col
+    ...col,
   }
   return colProps
 }
@@ -73,11 +86,13 @@ export const setGridProp = (col: ColProps = {}): ColProps => {
  */
 export const setComponentProps = (item: FormSchema): Recordable => {
   const notNeedClearable = ['ColorPicker']
-  const componentProps: Recordable = notNeedClearable.includes(item.component as string)
+  const componentProps: Recordable = notNeedClearable.includes(
+    item.component as string
+  )
     ? { ...item.componentProps }
     : {
         clearable: true,
-        ...item.componentProps
+        ...item.componentProps,
       }
   // 需要删除额外的属性
   delete componentProps?.slots
@@ -123,7 +138,11 @@ export const initModel = (schema: FormSchema[], formModel: Recordable) => {
     } else if (v.component && v.component !== 'Divider') {
       const hasField = Reflect.has(model, v.field)
       // 如果先前已经有值存在，则不进行重新赋值，而是采用现有的值
-      model[v.field] = hasField ? model[v.field] : v.value !== void 0 ? v.value : ''
+      model[v.field] = hasField
+        ? model[v.field]
+        : v.value !== void 0
+        ? v.value
+        : ''
     }
   })
   return model

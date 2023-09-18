@@ -75,7 +75,9 @@ const closeAllTags = () => {
 
 // 关闭其他
 const closeOthersTags = () => {
-  tagsViewStore.delOthersViews(unref(selectedTag) as RouteLocationNormalizedLoaded)
+  tagsViewStore.delOthersViews(
+    unref(selectedTag) as RouteLocationNormalizedLoaded
+  )
 }
 
 // 重新加载
@@ -86,18 +88,22 @@ const refreshSelectedTag = async (view?: RouteLocationNormalizedLoaded) => {
   await nextTick()
   replace({
     path: '/redirect' + path,
-    query: query
+    query: query,
   })
 }
 
 // 关闭左侧
 const closeLeftTags = () => {
-  tagsViewStore.delLeftViews(unref(selectedTag) as RouteLocationNormalizedLoaded)
+  tagsViewStore.delLeftViews(
+    unref(selectedTag) as RouteLocationNormalizedLoaded
+  )
 }
 
 // 关闭右侧
 const closeRightTags = () => {
-  tagsViewStore.delRightViews(unref(selectedTag) as RouteLocationNormalizedLoaded)
+  tagsViewStore.delRightViews(
+    unref(selectedTag) as RouteLocationNormalizedLoaded
+  )
 }
 
 // 跳转到最后一个
@@ -147,28 +153,36 @@ const moveToTarget = (currentTag: RouteLocationNormalizedLoaded) => {
     firstTag = tagList[0]
     lastTag = tagList[tagList.length - 1]
   }
-  if ((firstTag?.to as RouteLocationNormalizedLoaded).fullPath === currentTag.fullPath) {
+  if (
+    (firstTag?.to as RouteLocationNormalizedLoaded).fullPath ===
+    currentTag.fullPath
+  ) {
     // 直接滚动到0的位置
     const { start } = useScrollTo({
       el: wrap$!,
       position: 'scrollLeft',
       to: 0,
-      duration: 500
+      duration: 500,
     })
     start()
-  } else if ((lastTag?.to as RouteLocationNormalizedLoaded).fullPath === currentTag.fullPath) {
+  } else if (
+    (lastTag?.to as RouteLocationNormalizedLoaded).fullPath ===
+    currentTag.fullPath
+  ) {
     // 滚动到最后的位置
     const { start } = useScrollTo({
       el: wrap$!,
       position: 'scrollLeft',
       to: wrap$!.scrollWidth - wrap$!.offsetWidth,
-      duration: 500
+      duration: 500,
     })
     start()
   } else {
     // find preTag and nextTag
     const currentIndex: number = tagList.findIndex(
-      (item) => (item?.to as RouteLocationNormalizedLoaded).fullPath === currentTag.fullPath
+      (item) =>
+        (item?.to as RouteLocationNormalizedLoaded).fullPath ===
+        currentTag.fullPath
     )
     const tgsRefs = document.getElementsByClassName(`${prefixCls}__item`)
 
@@ -186,7 +200,7 @@ const moveToTarget = (currentTag: RouteLocationNormalizedLoaded) => {
         el: wrap$!,
         position: 'scrollLeft',
         to: afterNextTagOffsetLeft - wrap$!.offsetWidth,
-        duration: 500
+        duration: 500,
       })
       start()
     } else if (beforePrevTagOffsetLeft < unref(scrollLeftNumber)) {
@@ -194,7 +208,7 @@ const moveToTarget = (currentTag: RouteLocationNormalizedLoaded) => {
         el: wrap$!,
         position: 'scrollLeft',
         to: beforePrevTagOffsetLeft,
-        duration: 500
+        duration: 500,
       })
       start()
     }
@@ -207,10 +221,14 @@ const isActive = (route: RouteLocationNormalizedLoaded): boolean => {
 }
 
 // 所有右键菜单组件的元素
-const itemRefs = useTemplateRefsList<ComponentRef<typeof ContextMenu & ContextMenuExpose>>()
+const itemRefs =
+  useTemplateRefsList<ComponentRef<typeof ContextMenu & ContextMenuExpose>>()
 
 // 右键菜单装填改变的时候
-const visibleChange = (visible: boolean, tagItem: RouteLocationNormalizedLoaded) => {
+const visibleChange = (
+  visible: boolean,
+  tagItem: RouteLocationNormalizedLoaded
+) => {
   if (visible) {
     for (const v of unref(itemRefs)) {
       const elDropdownMenuRef = v.elDropdownMenuRef
@@ -238,7 +256,7 @@ const move = (to: number) => {
     el: wrap$!,
     position: 'scrollLeft',
     to: unref(scrollLeftNumber) + to,
-    duration: 500
+    duration: 500,
   })
   start()
 }
@@ -285,7 +303,7 @@ watch(
                 disabled: selectedTag?.fullPath !== item.fullPath,
                 command: () => {
                   refreshSelectedTag(item)
-                }
+                },
               },
               {
                 icon: 'ant-design:close-outlined',
@@ -293,7 +311,7 @@ watch(
                 disabled: !!visitedViews?.length && selectedTag?.meta.affix,
                 command: () => {
                   closeSelectedTag(item)
-                }
+                },
               },
               {
                 divided: true,
@@ -305,18 +323,19 @@ watch(
                     selectedTag?.fullPath !== item.fullPath),
                 command: () => {
                   closeLeftTags()
-                }
+                },
               },
               {
                 icon: 'ant-design:vertical-left-outlined',
                 label: t('common.closeTheRightTab'),
                 disabled:
                   !!visitedViews?.length &&
-                  (item.fullPath === visitedViews[visitedViews.length - 1].fullPath ||
+                  (item.fullPath ===
+                    visitedViews[visitedViews.length - 1].fullPath ||
                     selectedTag?.fullPath !== item.fullPath),
                 command: () => {
                   closeRightTags()
-                }
+                },
               },
               {
                 divided: true,
@@ -325,15 +344,15 @@ watch(
                 disabled: selectedTag?.fullPath !== item.fullPath,
                 command: () => {
                   closeOthersTags()
-                }
+                },
               },
               {
                 icon: 'ant-design:line-outlined',
                 label: t('common.closeAll'),
                 command: () => {
                   closeAllTags()
-                }
-              }
+                },
+              },
             ]"
             v-for="item in visitedViews"
             :key="item.fullPath"
@@ -342,13 +361,18 @@ watch(
               `${prefixCls}__item`,
               item?.meta?.affix ? `${prefixCls}__item--affix` : '',
               {
-                'is-active': isActive(item)
-              }
+                'is-active': isActive(item),
+              },
             ]"
             @visible-change="visibleChange"
           >
             <div>
-              <router-link :ref="tagLinksRefs.set" :to="{ ...item }" custom v-slot="{ navigate }">
+              <router-link
+                :ref="tagLinksRefs.set"
+                :to="{ ...item }"
+                custom
+                v-slot="{ navigate }"
+              >
                 <div
                   @click="navigate"
                   class="h-full flex justify-center items-center whitespace-nowrap pl-15px"

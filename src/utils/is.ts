@@ -55,7 +55,12 @@ export const isNumber = (val: unknown): val is number => {
 }
 
 export const isPromise = <T = any>(val: unknown): val is Promise<T> => {
-  return is(val, 'Promise') && isObject(val) && isFunction(val.then) && isFunction(val.catch)
+  return (
+    is(val, 'Promise') &&
+    isObject(val) &&
+    isFunction(val.then) &&
+    isFunction(val.catch)
+  )
 }
 
 export const isString = (val: unknown): val is string => {

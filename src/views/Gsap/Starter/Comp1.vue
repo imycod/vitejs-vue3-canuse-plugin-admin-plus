@@ -22,19 +22,19 @@ let ballHeight = '50px'
 
 const obj = reactive({
   myProp: 100,
-  prop: 0
+  prop: 0,
 })
 gsap.to(obj, 5, {
   prop: obj.myProp,
   roundProps: 'prop',
   onUpdate: () => {
     console.log(obj.prop)
-  }
+  },
 })
 onMounted(() => {
   gsap.to('#ball', 2, {
     x: '100px',
-    delay: 1
+    delay: 1,
   })
 })
 </script>

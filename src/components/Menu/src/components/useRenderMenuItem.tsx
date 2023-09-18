@@ -14,8 +14,13 @@ export const useRenderMenuItem = (
     return routers.map((v) => {
       const meta = (v.meta ?? {}) as RouteMeta
       if (!meta.hidden) {
-        const { oneShowingChild, onlyOneChild } = hasOneShowingChild(v.children, v)
-        const fullPath = isUrl(v.path) ? v.path : pathResolve(parentPath, v.path) // getAllParentPath<AppRouteRecordRaw>(allRouters, v.path).join('/')
+        const { oneShowingChild, onlyOneChild } = hasOneShowingChild(
+          v.children,
+          v
+        )
+        const fullPath = isUrl(v.path)
+          ? v.path
+          : pathResolve(parentPath, v.path) // getAllParentPath<AppRouteRecordRaw>(allRouters, v.path).join('/')
 
         const { renderMenuTitle } = useRenderMenuTitle()
 
@@ -25,9 +30,16 @@ export const useRenderMenuItem = (
           !meta?.alwaysShow
         ) {
           return (
-            <ElMenuItem index={onlyOneChild ? pathResolve(fullPath, onlyOneChild.path) : fullPath}>
+            <ElMenuItem
+              index={
+                onlyOneChild
+                  ? pathResolve(fullPath, onlyOneChild.path)
+                  : fullPath
+              }
+            >
               {{
-                default: () => renderMenuTitle(onlyOneChild ? onlyOneChild?.meta : meta)
+                default: () =>
+                  renderMenuTitle(onlyOneChild ? onlyOneChild?.meta : meta),
               }}
             </ElMenuItem>
           )
@@ -39,12 +51,14 @@ export const useRenderMenuItem = (
             <ElSubMenu
               index={fullPath}
               popperClass={
-                menuMode === 'vertical' ? `${preFixCls}--vertical` : `${preFixCls}--horizontal`
+                menuMode === 'vertical'
+                  ? `${preFixCls}--vertical`
+                  : `${preFixCls}--horizontal`
               }
             >
               {{
                 title: () => renderMenuTitle(meta),
-                default: () => renderMenuItem(v.children!, fullPath)
+                default: () => renderMenuItem(v.children!, fullPath),
               }}
             </ElSubMenu>
           )
@@ -54,6 +68,6 @@ export const useRenderMenuItem = (
   }
 
   return {
-    renderMenuItem
+    renderMenuItem,
   }
 }

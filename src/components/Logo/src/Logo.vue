@@ -61,7 +61,7 @@ watch(
         prefixCls,
         layout !== 'classic' ? `${prefixCls}__Top` : '',
         'flex !h-[var(--logo-height)] items-center cursor-pointer pl-8px relative',
-        'dark:bg-[var(--el-bg-color)]'
+        'dark:bg-[var(--el-bg-color)]',
       ]"
       to="/"
     >
@@ -76,8 +76,8 @@ watch(
           {
             'text-[var(--logo-title-text-color)]': layout === 'classic',
             'text-[var(--top-header-text-color)]':
-              layout === 'topLeft' || layout === 'top' || layout === 'cutMenu'
-          }
+              layout === 'topLeft' || layout === 'top' || layout === 'cutMenu',
+          },
         ]"
       >
         {{ title }}

@@ -15,7 +15,7 @@ const props = defineProps({
   // icon color
   color: propTypes.string,
   // icon size
-  size: propTypes.number.def(16)
+  size: propTypes.number.def(16),
 })
 
 const elRef = ref<ElRef>(null)
@@ -23,14 +23,16 @@ const elRef = ref<ElRef>(null)
 const isLocal = computed(() => props.icon.startsWith('svg-icon:'))
 
 const symbolId = computed(() => {
-  return unref(isLocal) ? `#icon-${props.icon.split('svg-icon:')[1]}` : props.icon
+  return unref(isLocal)
+    ? `#icon-${props.icon.split('svg-icon:')[1]}`
+    : props.icon
 })
 
 const getIconifyStyle = computed(() => {
   const { color, size } = props
   return {
     fontSize: `${size}px`,
-    color
+    color,
   }
 })
 

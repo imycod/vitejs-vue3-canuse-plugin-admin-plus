@@ -10,13 +10,17 @@
 import useModel from './hooks/useModel.js'
 const {
   querys: { demo2: query },
-  model
+  model,
 } = useModel('demo2')
 </script>
 
 <template>
   demo2
-  <select v-model="query[select.prop]" v-for="(select, index) in model" :key="index">
+  <select
+    v-model="query[select.prop]"
+    v-for="(select, index) in model"
+    :key="index"
+  >
     <option
       v-for="option in select.options"
       :key="option.index"

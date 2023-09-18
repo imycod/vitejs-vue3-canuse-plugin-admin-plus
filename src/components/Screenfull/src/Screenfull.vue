@@ -9,7 +9,7 @@ const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('screenfull')
 
 defineProps({
-  color: propTypes.string.def('')
+  color: propTypes.string.def(''),
 })
 
 const { toggle, isFullscreen } = useFullscreen()

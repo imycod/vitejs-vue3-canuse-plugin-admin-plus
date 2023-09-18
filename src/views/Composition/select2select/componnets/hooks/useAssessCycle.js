@@ -14,10 +14,10 @@ export default function useAssessCycle() {
     { index: 0, label: '季度考核' },
     { index: 1, label: '月度考核' },
     { index: 2, label: '半年度考核' },
-    { index: 3, label: '年度考核' }
+    { index: 3, label: '年度考核' },
   ]
 
   return {
-    basCycleOptions
+    basCycleOptions,
   }
 }

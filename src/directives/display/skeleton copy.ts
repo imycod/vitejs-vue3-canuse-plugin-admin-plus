@@ -46,39 +46,27 @@ watchEffect(() => {
 
 const Skeleton = {
   async mounted(el, binding) {
-    const arg = binding.arg
+    const { count } = binding.value
 
-    if (arg === 'list') {
-      const { count } = binding.value
-
-      const wrapper = document.createElement('div')
-      wrapper.className = state.stylus.parentClass + ' ' + '__sk'
-      for (let i = 0; i < count; i++) {
-        const div = document.createElement('div')
-        div.className = state.stylus.childClass
-        div.style = state.stylus.children
-        wrapper.appendChild(div)
-      }
-      el.appendChild(wrapper)
-      state.stylus.sk = [...wrapper.children]
-      state.loading = binding.value.loading
-    } else {
-      state.loading = binding.value
+    const wrapper = document.createElement('div')
+    wrapper.className = state.stylus.parentClass + ' ' + '__sk'
+    for (let i = 0; i < count; i++) {
+      const div = document.createElement('div')
+      div.className = state.stylus.childClass
+      div.style = state.stylus.children
+      wrapper.appendChild(div)
     }
+    el.appendChild(wrapper)
+    state.stylus.sk = [...wrapper.children]
+    state.loading = binding.value.loading
   },
   updated(el, binding) {
-    const arg = binding.arg
+    state.loading = binding.value.loading
 
-    if (arg === 'list') {
-      state.loading = binding.value.loading
-
-      if (!state.loading) {
-        const sk = document.querySelector('.__sk')
-        sk?.parentNode && sk.parentNode.removeChild(sk)
-        state.stylus.sk = null
-      }
-    } else {
-      state.loading = binding.value
+    if (!state.loading) {
+      const sk = document.querySelector('.__sk')
+      sk?.parentNode && sk.parentNode.removeChild(sk)
+      state.stylus.sk = null
     }
   },
   unmounted(el, binding) {

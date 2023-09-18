@@ -12,7 +12,7 @@ const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('size-dropdown')
 
 defineProps({
-  color: propTypes.string.def('')
+  color: propTypes.string.def(''),
 })
 
 const { t } = useI18n()
@@ -28,7 +28,12 @@ const setCurrentSize = (size: ElementPlusSize) => {
 
 <template>
   <ElDropdown :class="prefixCls" trigger="click" @command="setCurrentSize">
-    <Icon :size="18" icon="mdi:format-size" :color="color" class="cursor-pointer" />
+    <Icon
+      :size="18"
+      icon="mdi:format-size"
+      :color="color"
+      class="cursor-pointer"
+    />
     <template #dropdown>
       <ElDropdownMenu>
         <ElDropdownItem v-for="item in sizeMap" :key="item" :command="item">

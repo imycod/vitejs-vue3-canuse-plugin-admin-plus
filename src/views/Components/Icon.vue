@@ -26,12 +26,12 @@ const alarmClock = useIcon({ icon: 'ep:alarm-clock' })
     :schema="[
       {
         label: t('iconDemo.recommendeDes'),
-        keys: ['Iconify']
+        keys: ['Iconify'],
       },
       {
         label: t('iconDemo.accessAddress'),
-        keys: [t('iconDemo.accessAddress')]
-      }
+        keys: [t('iconDemo.accessAddress')],
+      },
     ]"
     @click="keyClick"
   />

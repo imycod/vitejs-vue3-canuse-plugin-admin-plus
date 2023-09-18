@@ -27,7 +27,7 @@ const config: ConfigType = {
     pro: '',
 
     // 打包测试环境接口前缀
-    test: ''
+    test: '',
   },
 
   /**
@@ -51,7 +51,7 @@ const config: ConfigType = {
    * 根据要下载的文件的域名来设置
    */
   brand: 'baidu',
-  domain: 'https://www.baidu.com'
+  domain: 'https://www.baidu.com',
 }
 
 export { config }

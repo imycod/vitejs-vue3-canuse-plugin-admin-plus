@@ -7,7 +7,7 @@ import { ref, reactive } from 'vue'
 import {
   getUserAccessSourceApi,
   getWeeklyUserActivityApi,
-  getMonthlySalesApi
+  getMonthlySalesApi,
 } from '@/api/dashboard/analysis'
 import { set } from 'lodash-es'
 import { EChartsOption } from 'echarts'
@@ -31,7 +31,7 @@ const getUserAccessSource = async () => {
     pieOptionsData!.series![0].data = res.data.map((v) => {
       return {
         name: t(v.name),
-        value: v.value
+        value: v.value,
       }
     })
   }
@@ -52,8 +52,8 @@ const getWeeklyUserActivity = async () => {
       {
         name: t('analysis.activeQuantity'),
         data: res.data.map((v) => v.value),
-        type: 'bar'
-      }
+        type: 'bar',
+      },
     ])
   }
 }
@@ -76,7 +76,7 @@ const getMonthlySales = async () => {
         type: 'line',
         data: res.data.map((v) => v.estimate),
         animationDuration: 2800,
-        animationEasing: 'cubicInOut'
+        animationEasing: 'cubicInOut',
       },
       {
         name: t('analysis.actual'),
@@ -85,14 +85,18 @@ const getMonthlySales = async () => {
         itemStyle: {},
         data: res.data.map((v) => v.actual),
         animationDuration: 2800,
-        animationEasing: 'quadraticOut'
-      }
+        animationEasing: 'quadraticOut',
+      },
     ])
   }
 }
 
 const getAllApi = async () => {
-  await Promise.all([getUserAccessSource(), getWeeklyUserActivity(), getMonthlySales()])
+  await Promise.all([
+    getUserAccessSource(),
+    getWeeklyUserActivity(),
+    getMonthlySales(),
+  ])
   loading.value = false
 }
 

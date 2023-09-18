@@ -50,19 +50,19 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
     tableList: [],
     // AxiosConfig 配置
     params: {
-      ...(config?.defaultParams || {})
+      ...(config?.defaultParams || {}),
     },
     // 加载中
     loading: true,
     // 当前行的数据
-    currentRow: null
+    currentRow: null,
   })
 
   const paramsObj = computed(() => {
     return {
       ...tableObject.params,
       pageSize: tableObject.pageSize,
-      pageIndex: tableObject.currentPage
+      pageIndex: tableObject.currentPage,
     }
   })
 
@@ -92,7 +92,10 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
   // ElTable实例
   const elTableRef = ref<ComponentRef<typeof ElTable>>()
 
-  const register = (ref: typeof Table & TableExpose, elRef: ComponentRef<typeof ElTable>) => {
+  const register = (
+    ref: typeof Table & TableExpose,
+    elRef: ComponentRef<typeof ElTable>
+  ) => {
     tableRef.value = ref
     elTableRef.value = unref(elRef)
   }
@@ -101,7 +104,9 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
     await nextTick()
     const table = unref(tableRef)
     if (!table) {
-      console.error('The table is not registered. Please use the register method to register')
+      console.error(
+        'The table is not registered. Please use the register method to register'
+      )
     }
     return table
   }
@@ -113,7 +118,8 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
 
       // 计算出临界点
       const currentPage =
-        tableObject.total % tableObject.pageSize === ids.length || tableObject.pageSize === 1
+        tableObject.total % tableObject.pageSize === ids.length ||
+        tableObject.pageSize === 1
           ? tableObject.currentPage > 1
             ? tableObject.currentPage - 1
             : tableObject.currentPage
@@ -131,8 +137,12 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
         tableObject.loading = false
       })
       if (res) {
-        tableObject.tableList = get(res.data || {}, config?.response.list as string)
-        tableObject.total = get(res.data || {}, config?.response?.total as string) || 0
+        tableObject.tableList = get(
+          res.data || {},
+          config?.response.list as string
+        )
+        tableObject.total =
+          get(res.data || {}, config?.response?.total as string) || 0
       }
     },
     setProps: async (props: TableProps = {}) => {
@@ -153,12 +163,16 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
       tableObject.params = Object.assign(tableObject.params, {
         pageSize: tableObject.pageSize,
         pageIndex: tableObject.currentPage,
-        ...data
+        ...data,
       })
       methods.getList()
     },
     // 删除数据
-    delList: async (ids: string[] | number[], multiple: boolean, message = true) => {
+    delList: async (
+      ids: string[] | number[],
+      multiple: boolean,
+      message = true
+    ) => {
       const tableRef = await getTable()
       if (multiple) {
         if (!tableRef?.selections.length) {
@@ -175,14 +189,14 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
         ElMessageBox.confirm(t('common.delMessage'), t('common.delWarning'), {
           confirmButtonText: t('common.delOk'),
           cancelButtonText: t('common.delCancel'),
-          type: 'warning'
+          type: 'warning',
         }).then(async () => {
           await delData(ids)
         })
       } else {
         await delData(ids)
       }
-    }
+    },
   }
 
   config?.props && methods.setProps(config.props)
@@ -191,6 +205,6 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
     register,
     elTableRef,
     tableObject,
-    methods
+    methods,
   }
 }

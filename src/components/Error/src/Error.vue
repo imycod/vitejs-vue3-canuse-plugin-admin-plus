@@ -20,22 +20,24 @@ const errorMap: {
   '404': {
     url: pageError,
     message: t('error.pageError'),
-    buttonText: t('error.returnToHome')
+    buttonText: t('error.returnToHome'),
   },
   '500': {
     url: networkError,
     message: t('error.networkError'),
-    buttonText: t('error.returnToHome')
+    buttonText: t('error.returnToHome'),
   },
   '403': {
     url: noPermission,
     message: t('error.noPermission'),
-    buttonText: t('error.returnToHome')
-  }
+    buttonText: t('error.returnToHome'),
+  },
 }
 
 const props = defineProps({
-  type: propTypes.string.validate((v: string) => ['404', '500', '403'].includes(v)).def('404')
+  type: propTypes.string
+    .validate((v: string) => ['404', '500', '403'].includes(v))
+    .def('404'),
 })
 
 const emit = defineEmits(['errorClick'])
@@ -49,9 +51,13 @@ const btnClick = () => {
   <div class="flex justify-center">
     <div class="text-center">
       <img width="350" :src="errorMap[type].url" alt="" />
-      <div class="text-14px text-[var(--el-color-info)]">{{ errorMap[type].message }}</div>
+      <div class="text-14px text-[var(--el-color-info)]">
+        {{ errorMap[type].message }}
+      </div>
       <div class="mt-20px">
-        <ElButton type="primary" @click="btnClick">{{ errorMap[type].buttonText }}</ElButton>
+        <ElButton type="primary" @click="btnClick">{{
+          errorMap[type].buttonText
+        }}</ElButton>
       </div>
     </div>
   </div>

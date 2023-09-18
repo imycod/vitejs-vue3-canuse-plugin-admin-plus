@@ -14,7 +14,7 @@ const prefixCls = getPrefixCls('input-password')
 const props = defineProps({
   // 是否显示密码强度
   strength: propTypes.bool.def(false),
-  modelValue: propTypes.string.def('')
+  modelValue: propTypes.string.def(''),
 })
 
 watch(
@@ -55,7 +55,9 @@ const getPasswordStrength = computed(() => {
 })
 
 const getIconName = computed(() =>
-  unref(textType) === 'password' ? 'ant-design:eye-invisible-outlined' : 'ant-design:eye-outlined'
+  unref(textType) === 'password'
+    ? 'ant-design:eye-invisible-outlined'
+    : 'ant-design:eye-outlined'
 )
 </script>
 
@@ -63,7 +65,11 @@ const getIconName = computed(() =>
   <div :class="[prefixCls, `${prefixCls}--${configGlobal?.size}`]">
     <ElInput v-bind="$attrs" v-model="valueRef" :type="textType">
       <template #suffix>
-        <Icon class="el-input__icon cursor-pointer" :icon="getIconName" @click="changeTextType" />
+        <Icon
+          class="el-input__icon cursor-pointer"
+          :icon="getIconName"
+          @click="changeTextType"
+        />
       </template>
     </ElInput>
     <div
@@ -71,7 +77,10 @@ const getIconName = computed(() =>
       :class="`${prefixCls}__bar`"
       class="relative h-6px mt-10px mb-6px mr-auto ml-auto"
     >
-      <div :class="`${prefixCls}__bar--fill`" :data-score="getPasswordStrength"></div>
+      <div
+        :class="`${prefixCls}__bar--fill`"
+        :data-score="getPasswordStrength"
+      ></div>
     </div>
   </div>
 </template>

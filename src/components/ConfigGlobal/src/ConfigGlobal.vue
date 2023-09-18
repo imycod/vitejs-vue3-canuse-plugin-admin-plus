@@ -14,7 +14,9 @@ const { variables } = useDesign()
 const appStore = useAppStore()
 
 const props = defineProps({
-  size: propTypes.oneOf<ElementPlusSize>(['default', 'small', 'large']).def('default')
+  size: propTypes
+    .oneOf<ElementPlusSize>(['default', 'small', 'large'])
+    .def('default'),
 })
 
 provide('configGlobal', props)
@@ -34,14 +36,16 @@ watch(
       !appStore.getMobile ? appStore.setMobile(true) : undefined
       setCssVar('--left-menu-min-width', '0')
       appStore.setCollapse(true)
-      appStore.getLayout !== 'classic' ? appStore.setLayout('classic') : undefined
+      appStore.getLayout !== 'classic'
+        ? appStore.setLayout('classic')
+        : undefined
     } else {
       appStore.getMobile ? appStore.setMobile(false) : undefined
       setCssVar('--left-menu-min-width', '64px')
     }
   },
   {
-    immediate: true
+    immediate: true,
   }
 )
 

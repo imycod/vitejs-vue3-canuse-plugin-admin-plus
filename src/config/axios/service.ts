@@ -3,7 +3,7 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosRequestHeaders,
   AxiosResponse,
-  AxiosError
+  AxiosError,
 } from 'axios'
 
 import qs from 'qs'
@@ -16,7 +16,12 @@ const { result_code, base_url } = config
 
 import { getRefreshTokenApi, isRefreshRequest } from '@/api/login'
 
-import { getToken, setToken, setRefreshToken, getRefreshToken } from '@/utils/token'
+import {
+  getToken,
+  setToken,
+  setRefreshToken,
+  getRefreshToken,
+} from '@/utils/token'
 
 export const PATH_URL = base_url[import.meta.env.VITE_API_BASEPATH]
 
@@ -25,8 +30,8 @@ const service: AxiosInstance = axios.create({
   baseURL: PATH_URL, // api 的 base_url
   timeout: config.request_timeout, // 请求超时时间
   headers: {
-    Authorization: `Bearer ${getToken()}`
-  }
+    Authorization: `Bearer ${getToken()}`,
+  },
 })
 
 // request拦截器
@@ -80,7 +85,10 @@ service.interceptors.response.use(
       return response
     } else if (response.data.code === result_code) {
       return response.data
-    } else if (response.data.code === 401 && !isRefreshRequest(response.config)) {
+    } else if (
+      response.data.code === 401 &&
+      !isRefreshRequest(response.config)
+    ) {
       // 刷新token （token有过期事件，用refreshToken去换token）&& 当前的请求不是针对刷新token的请求
       const isSuccess = await getRefreshTokenApi()
       if (isSuccess) {

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ElCollapseTransition, ElDescriptions, ElDescriptionsItem, ElTooltip } from 'element-plus'
+import {
+  ElCollapseTransition,
+  ElDescriptions,
+  ElDescriptionsItem,
+  ElTooltip,
+} from 'element-plus'
 import { useDesign } from '@/hooks/web/useDesign'
 import { propTypes } from '@/utils/propTypes'
 import { ref, unref, PropType, computed, useAttrs, useSlots } from 'vue'
@@ -20,12 +25,12 @@ const props = defineProps({
   collapse: propTypes.bool.def(true),
   schema: {
     type: Array as PropType<DescriptionsSchema[]>,
-    default: () => []
+    default: () => [],
   },
   data: {
     type: Object as PropType<any>,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 })
 
 const { getPrefixCls } = useDesign()
@@ -33,7 +38,14 @@ const { getPrefixCls } = useDesign()
 const prefixCls = getPrefixCls('descriptions')
 
 const getBindValue = computed(() => {
-  const delArr: string[] = ['title', 'message', 'collapse', 'schema', 'data', 'class']
+  const delArr: string[] = [
+    'title',
+    'message',
+    'collapse',
+    'schema',
+    'data',
+    'class',
+  ]
   const obj = { ...attrs, ...props }
   for (const key in obj) {
     if (delArr.indexOf(key) !== -1) {
@@ -68,18 +80,23 @@ const toggleClick = () => {
   <div
     :class="[
       prefixCls,
-      'bg-[var(--el-color-white)] dark:(bg-[var(--el-bg-color)] border-[var(--el-border-color)] border-1px)'
+      'bg-[var(--el-color-white)] dark:(bg-[var(--el-bg-color)] border-[var(--el-border-color)] border-1px)',
     ]"
   >
     <div
       v-if="title"
       :class="[
         `${prefixCls}-header`,
-        'h-50px flex justify-between items-center border-bottom-1 border-solid border-[var(--tags-view-border-color)] px-10px cursor-pointer dark:border-[var(--el-border-color)]'
+        'h-50px flex justify-between items-center border-bottom-1 border-solid border-[var(--tags-view-border-color)] px-10px cursor-pointer dark:border-[var(--el-border-color)]',
       ]"
       @click="toggleClick"
     >
-      <div :class="[`${prefixCls}-header__title`, 'relative font-18px font-bold ml-10px']">
+      <div
+        :class="[
+          `${prefixCls}-header__title`,
+          'relative font-18px font-bold ml-10px',
+        ]"
+      >
         <div class="flex items-center">
           {{ title }}
           <ElTooltip v-if="message" :content="message" placement="right">
@@ -110,7 +127,7 @@ const toggleClick = () => {
               <slot
                 :name="`${item.field}-label`"
                 :row="{
-                  label: item.label
+                  label: item.label,
                 }"
                 >{{ item.label }}</slot
               >

@@ -28,7 +28,10 @@ export const filterMenusPath = (
     let data: Nullable<AppRouteRecordRaw> = null
     const meta = (v.meta ?? {}) as RouteMeta
     if (!meta.hidden || meta.canTo) {
-      const allParentPath = getAllParentPath<AppRouteRecordRaw>(allRoutes, v.path)
+      const allParentPath = getAllParentPath<AppRouteRecordRaw>(
+        allRoutes,
+        v.path
+      )
 
       const fullPath = isUrl(v.path) ? v.path : allParentPath.join('/')
 

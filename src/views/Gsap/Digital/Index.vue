@@ -10,28 +10,28 @@ import { onMounted } from 'vue'
 const list = ref([])
 let res = [
   {
-    count: 1000
+    count: 1000,
   },
   {
-    count: 1200
+    count: 1200,
   },
   {
-    count: 4000
+    count: 4000,
   },
   {
-    count: 9000
+    count: 9000,
   },
   {
-    count: 2000
+    count: 2000,
   },
   {
-    count: 5000
-  }
+    count: 5000,
+  },
 ]
 list.value = res.map((item) => {
   return {
     ...item,
-    count: 0
+    count: 0,
   }
 })
 onMounted(() => {
@@ -39,7 +39,7 @@ onMounted(() => {
     gsap.to(item, {
       duration: 2,
       count: res[index].count,
-      roundProps: 'count'
+      roundProps: 'count',
       //   onUpdate: () => (item.count = item.count)
     })
   })

@@ -15,7 +15,10 @@ export const useForm = (props?: FormProps) => {
    * @param ref Form实例
    * @param elRef ElForm实例
    */
-  const register = (ref: typeof Form & FormExpose, elRef: ComponentRef<typeof ElForm>) => {
+  const register = (
+    ref: typeof Form & FormExpose,
+    elRef: ComponentRef<typeof ElForm>
+  ) => {
     formRef.value = ref
     elFormRef.value = elRef
   }
@@ -24,7 +27,9 @@ export const useForm = (props?: FormProps) => {
     await nextTick()
     const form = unref(formRef)
     if (!form) {
-      console.error('The form is not registered. Please use the register method to register')
+      console.error(
+        'The form is not registered. Please use the register method to register'
+      )
     }
     return form
   }
@@ -82,7 +87,7 @@ export const useForm = (props?: FormProps) => {
     getFormData: async <T = Recordable>(): Promise<T> => {
       const form = await getForm()
       return form?.formModel as T
-    }
+    },
   }
 
   props && methods.setProps(props)
@@ -90,6 +95,6 @@ export const useForm = (props?: FormProps) => {
   return {
     register,
     elFormRef,
-    methods
+    methods,
   }
 }

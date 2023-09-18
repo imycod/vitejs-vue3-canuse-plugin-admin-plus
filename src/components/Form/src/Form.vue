@@ -1,5 +1,13 @@
 <script lang="tsx">
-import { PropType, defineComponent, ref, computed, unref, watch, onMounted } from 'vue'
+import {
+  PropType,
+  defineComponent,
+  ref,
+  computed,
+  unref,
+  watch,
+  onMounted,
+} from 'vue'
 import { ElForm, ElFormItem, ElRow, ElCol, ElTooltip } from 'element-plus'
 import { componentMap } from './componentMap'
 import { propTypes } from '@/utils/propTypes'
@@ -10,7 +18,7 @@ import {
   setComponentProps,
   setItemComponentSlots,
   initModel,
-  setFormItemSlots
+  setFormItemSlots,
 } from './helper'
 import { useRenderSelect } from './components/useRenderSelect'
 import { useRenderRadio } from './components/useRenderRadio'
@@ -32,21 +40,21 @@ export default defineComponent({
     // 生成Form的布局结构数组
     schema: {
       type: Array as PropType<FormSchema[]>,
-      default: () => []
+      default: () => [],
     },
     // 是否需要栅格布局
     isCol: propTypes.bool.def(true),
     // 表单数据对象
     model: {
       type: Object as PropType<Recordable>,
-      default: () => ({})
+      default: () => ({}),
     },
     // 是否自动设置placeholder
     autoSetPlaceholder: propTypes.bool.def(true),
     // 是否自定义内容
     isCustom: propTypes.bool.def(false),
     // 表单label宽度
-    labelWidth: propTypes.oneOfType([String, Number]).def('auto')
+    labelWidth: propTypes.oneOfType([String, Number]).def('auto'),
   },
   emits: ['register'],
   setup(props, { slots, expose, emit }) {
@@ -121,7 +129,7 @@ export default defineComponent({
       delSchema,
       addSchema,
       setSchema,
-      getElFormRef
+      getElFormRef,
     })
 
     // 监听表单结构化数组，重新生成formModel
@@ -132,7 +140,7 @@ export default defineComponent({
       },
       {
         immediate: true,
-        deep: true
+        deep: true,
       }
     )
 
@@ -157,12 +165,18 @@ export default defineComponent({
         .map((item) => {
           // 如果是 Divider 组件，需要自己占用一行
           const isDivider = item.component === 'Divider'
-          const Com = componentMap['Divider'] as ReturnType<typeof defineComponent>
+          const Com = componentMap['Divider'] as ReturnType<
+            typeof defineComponent
+          >
           return isDivider ? (
-            <Com {...{ contentPosition: 'left', ...item.componentProps }}>{item?.label}</Com>
+            <Com {...{ contentPosition: 'left', ...item.componentProps }}>
+              {item?.label}
+            </Com>
           ) : isCol ? (
             // 如果需要栅格，需要包裹 ElCol
-            <ElCol {...setGridProp(item.colProps)}>{renderFormItem(item)}</ElCol>
+            <ElCol {...setGridProp(item.colProps)}>
+              {renderFormItem(item)}
+            </ElCol>
           ) : (
             renderFormItem(item)
           )
@@ -174,7 +188,11 @@ export default defineComponent({
       // 单独给只有options属性的组件做判断
       const notRenderOptions = ['SelectV2', 'Cascader', 'Transfer']
       const slotsMap: Recordable = {
-        ...setItemComponentSlots(slots, item?.componentProps?.slots, item.field)
+        ...setItemComponentSlots(
+          slots,
+          item?.componentProps?.slots,
+          item.field
+        ),
       }
       if (
         item?.component !== 'SelectV2' &&
@@ -201,7 +219,7 @@ export default defineComponent({
                       color="var(--el-color-primary)"
                       class="ml-2px relative top-1px"
                     ></Icon>
-                  )
+                  ),
                 }}
               </ElTooltip>
             </>
@@ -209,7 +227,11 @@ export default defineComponent({
         }
       }
       return (
-        <ElFormItem {...(item.formItemProps || {})} prop={item.field} label={item.label || ''}>
+        <ElFormItem
+          {...(item.formItemProps || {})}
+          prop={item.field}
+          label={item.label || ''}
+        >
           {{
             ...formItemSlots,
             default: () => {
@@ -235,7 +257,7 @@ export default defineComponent({
                   {{ ...slotsMap }}
                 </Com>
               )
-            }
+            },
           }}
         </ElFormItem>
       )
@@ -263,7 +285,13 @@ export default defineComponent({
     // 过滤传入Form组件的属性
     const getFormBindValue = () => {
       // 避免在标签上出现多余的属性
-      const delKeys = ['schema', 'isCol', 'autoSetPlaceholder', 'isCustom', 'model']
+      const delKeys = [
+        'schema',
+        'isCol',
+        'autoSetPlaceholder',
+        'isCustom',
+        'model',
+      ]
       const props = { ...unref(getProps) }
       for (const key in props) {
         if (delKeys.indexOf(key) !== -1) {
@@ -285,11 +313,11 @@ export default defineComponent({
           default: () => {
             const { isCustom } = unref(getProps)
             return isCustom ? getSlot(slots, 'default') : renderWrap()
-          }
+          },
         }}
       </ElForm>
     )
-  }
+  },
 })
 </script>
 

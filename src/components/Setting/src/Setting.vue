@@ -32,7 +32,10 @@ const systemTheme = ref(appStore.getTheme.elColorPrimary)
 const setSystemTheme = (color: string) => {
   setCssVar('--el-color-primary', color)
   appStore.setTheme({ elColorPrimary: color })
-  const leftMenuBgColor = useCssVar('--left-menu-bg-color', document.documentElement)
+  const leftMenuBgColor = useCssVar(
+    '--left-menu-bg-color',
+    document.documentElement
+  )
   setMenuTheme(trim(unref(leftMenuBgColor)))
 }
 
@@ -52,7 +55,7 @@ const setHeaderTheme = (color: string) => {
     topHeaderBgColor: color,
     topHeaderTextColor: textColor,
     topHeaderHoverColor: textHoverColor,
-    topToolBorderColor
+    topToolBorderColor,
   })
   if (unref(layout) === 'top') {
     setMenuTheme(color)
@@ -87,7 +90,7 @@ const setMenuTheme = (color: string) => {
     // logo字体颜色
     logoTitleTextColor: isDarkColor ? '#fff' : 'inherit',
     // logo边框颜色
-    logoBorderColor: isDarkColor ? color : '#eee'
+    logoBorderColor: isDarkColor ? color : '#eee',
   }
   appStore.setTheme(theme)
   appStore.setCssVarTheme()
@@ -177,7 +180,7 @@ const copyConfig = async () => {
         // 头部边框颜色
         topToolBorderColor: '${appStore.getTheme.topToolBorderColor}'
       }
-    `
+    `,
   })
   if (!isSupported) {
     ElMessage.error(t('setting.copyFailed'))
@@ -234,7 +237,7 @@ const clear = () => {
           '#ee4f12',
           '#0096c7',
           '#9c27b0',
-          '#ff9800'
+          '#ff9800',
         ]"
         @change="setSystemTheme"
       />
@@ -251,7 +254,7 @@ const clear = () => {
           '#24292e',
           '#394664',
           '#009688',
-          '#383f45'
+          '#383f45',
         ]"
         @change="setHeaderTheme"
       />
@@ -269,7 +272,7 @@ const clear = () => {
             '#191b24',
             '#383f45',
             '#001628',
-            '#344058'
+            '#344058',
           ]"
           @change="setMenuTheme"
         />
@@ -282,7 +285,9 @@ const clear = () => {
 
     <ElDivider />
     <div>
-      <ElButton type="primary" class="w-full" @click="copyConfig">{{ t('setting.copy') }}</ElButton>
+      <ElButton type="primary" class="w-full" @click="copyConfig">{{
+        t('setting.copy')
+      }}</ElButton>
     </div>
     <div class="mt-5px">
       <ElButton type="danger" class="w-full" @click="clear">

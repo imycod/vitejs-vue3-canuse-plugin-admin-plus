@@ -15,6 +15,8 @@ const guideStart = () => {
 
 <template>
   <ContentWrap :title="t('guideDemo.guide')" :message="t('guideDemo.message')">
-    <ElButton type="primary" @click="guideStart">{{ t('guideDemo.start') }}</ElButton>
+    <ElButton type="primary" @click="guideStart">{{
+      t('guideDemo.start')
+    }}</ElButton>
   </ContentWrap>
 </template>

@@ -12,7 +12,7 @@ export function toCreateChunk(file, index, CHUNK_SIZE) {
         start,
         end,
         index,
-        hash: spark.end()
+        hash: spark.end(),
       })
     }
     reader.readAsArrayBuffer(file.slice(start, end))

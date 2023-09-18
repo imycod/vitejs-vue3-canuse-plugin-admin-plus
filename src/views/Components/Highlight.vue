@@ -13,7 +13,10 @@ const keyClick = (key: string) => {
 
 <template>
   <ContentWrap :title="t('highlightDemo.highlight')">
-    <Highlight :keys="[t('highlightDemo.keys1'), t('highlightDemo.keys2')]" @click="keyClick">
+    <Highlight
+      :keys="[t('highlightDemo.keys1'), t('highlightDemo.keys2')]"
+      @click="keyClick"
+    >
       {{ t('highlightDemo.message') }}
     </Highlight>
   </ContentWrap>

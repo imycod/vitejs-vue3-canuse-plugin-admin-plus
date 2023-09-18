@@ -47,7 +47,7 @@ export function fileInchunksForWorker(file, config) {
     const workerChunkCount = Math.ceil(totalChunkCount / THREAD_COUNT)
     for (let index = 0; index < THREAD_COUNT; index++) {
       const worker = new Worker(WORk_FILE_NAME, {
-        type: 'module'
+        type: 'module',
       })
       // 109 -> 4 -> [0...28] [28...56] [56...84] [84...109]
       // 第几个线程 * 每个线程分到的数量
@@ -61,7 +61,7 @@ export function fileInchunksForWorker(file, config) {
         file,
         chunkSize,
         startIndex,
-        endIndex
+        endIndex,
       })
       worker.onmessage = (e) => {
         // 线程顺序要注意，

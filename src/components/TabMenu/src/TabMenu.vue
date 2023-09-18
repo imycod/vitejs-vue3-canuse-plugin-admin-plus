@@ -34,7 +34,9 @@ export default defineComponent({
 
     const routers = computed(() => permissionStore.getRouters)
 
-    const tabRouters = computed(() => unref(routers).filter((v) => !v?.meta?.hidden))
+    const tabRouters = computed(() =>
+      unref(routers).filter((v) => !v?.meta?.hidden)
+    )
 
     const setCollapse = () => {
       appStore.setCollapse(!unref(collapse))
@@ -45,7 +47,8 @@ export default defineComponent({
         const path = `/${unref(currentRoute).path.split('/')[1]}`
         const children = unref(tabRouters).find(
           (v) =>
-            (v.meta?.alwaysShow || (v?.children?.length && v?.children?.length > 1)) &&
+            (v.meta?.alwaysShow ||
+              (v?.children?.length && v?.children?.length > 1)) &&
             v.path === path
         )?.children
 
@@ -69,7 +72,7 @@ export default defineComponent({
       },
       {
         immediate: true,
-        deep: true
+        deep: true,
       }
     )
 
@@ -144,8 +147,8 @@ export default defineComponent({
           'relative bg-[var(--left-menu-bg-color)] top-1px z-3000',
           {
             'w-[var(--tab-menu-max-width)]': !unref(collapse),
-            'w-[var(--tab-menu-min-width)]': unref(collapse)
-          }
+            'w-[var(--tab-menu-min-width)]': unref(collapse),
+          },
         ]}
         onMouseleave={mouseleave}
       >
@@ -154,11 +157,15 @@ export default defineComponent({
             {() => {
               return unref(tabRouters).map((v) => {
                 const item = (
-                  v.meta?.alwaysShow || (v?.children?.length && v?.children?.length > 1)
+                  v.meta?.alwaysShow ||
+                  (v?.children?.length && v?.children?.length > 1)
                     ? v
                     : {
                         ...(v?.children && v?.children[0]),
-                        path: pathResolve(v.path, (v?.children && v?.children[0])?.path as string)
+                        path: pathResolve(
+                          v.path,
+                          (v?.children && v?.children[0])?.path as string
+                        ),
                       }
                 ) as AppRouteRecordRaw
                 return (
@@ -167,8 +174,8 @@ export default defineComponent({
                       `${prefixCls}__item`,
                       'text-center text-12px relative py-12px cursor-pointer',
                       {
-                        'is-active': isActive(v.path)
-                      }
+                        'is-active': isActive(v.path),
+                      },
                     ]}
                     onClick={() => {
                       tabClick(item)
@@ -178,7 +185,9 @@ export default defineComponent({
                       <Icon icon={item?.meta?.icon}></Icon>
                     </div>
                     {!unref(showTitle) ? undefined : (
-                      <p class="break-words mt-5px px-2px">{t(item.meta?.title)}</p>
+                      <p class="break-words mt-5px px-2px">
+                        {t(item.meta?.title)}
+                      </p>
                     )}
                   </div>
                 )
@@ -189,11 +198,13 @@ export default defineComponent({
         <div
           class={[
             `${prefixCls}--collapse`,
-            'text-center h-[var(--tab-menu-collapse-height)] leading-[var(--tab-menu-collapse-height)] cursor-pointer'
+            'text-center h-[var(--tab-menu-collapse-height)] leading-[var(--tab-menu-collapse-height)] cursor-pointer',
           ]}
           onClick={setCollapse}
         >
-          <Icon icon={unref(collapse) ? 'ep:d-arrow-right' : 'ep:d-arrow-left'}></Icon>
+          <Icon
+            icon={unref(collapse) ? 'ep:d-arrow-right' : 'ep:d-arrow-left'}
+          ></Icon>
         </div>
         <Menu
           class={[
@@ -201,15 +212,16 @@ export default defineComponent({
             {
               '!left-[var(--tab-menu-min-width)]': unref(collapse),
               '!left-[var(--tab-menu-max-width)]': !unref(collapse),
-              '!w-[calc(var(--left-menu-max-width)+1px)]': unref(showMenu) || unref(fixedMenu),
-              '!w-0': !unref(showMenu) && !unref(fixedMenu)
-            }
+              '!w-[calc(var(--left-menu-max-width)+1px)]':
+                unref(showMenu) || unref(fixedMenu),
+              '!w-0': !unref(showMenu) && !unref(fixedMenu),
+            },
           ]}
           style="transition: width var(--transition-time-02), left var(--transition-time-02);"
         ></Menu>
       </div>
     )
-  }
+  },
 })
 </script>
 

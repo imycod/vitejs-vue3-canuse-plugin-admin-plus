@@ -33,7 +33,8 @@ const handleClickOutside = () => {
 }
 
 const renderLayout = () => {
-  const { renderClassic, renderTopLeft, renderTop, renderCutMenu } = useRenderLayout()
+  const { renderClassic, renderTopLeft, renderTop, renderCutMenu } =
+    useRenderLayout()
   switch (unref(layout)) {
     case 'classic':
       // const { renderClassic } = useRenderLayout()
@@ -56,7 +57,13 @@ export default defineComponent({
   name: 'Layout',
   setup() {
     return () => (
-      <section class={[prefixCls, `${prefixCls}__${layout.value}`, 'w-[100%] h-[100%] relative']}>
+      <section
+        class={[
+          prefixCls,
+          `${prefixCls}__${layout.value}`,
+          'w-[100%] h-[100%] relative',
+        ]}
+      >
         {mobile.value && !collapse.value ? (
           <div
             class="absolute top-0 left-0 w-full h-full opacity-30 z-99 bg-[var(--el-color-black)]"
@@ -71,7 +78,7 @@ export default defineComponent({
         <Setting></Setting>
       </section>
     )
-  }
+  },
 })
 </script>
 

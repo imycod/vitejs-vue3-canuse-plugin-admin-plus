@@ -10,9 +10,9 @@ const prefixCls = getPrefixCls('color-radio-picker')
 const props = defineProps({
   schema: {
     type: Array as PropType<string[]>,
-    default: () => []
+    default: () => [],
   },
-  modelValue: propTypes.string.def('')
+  modelValue: propTypes.string.def(''),
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])
@@ -45,7 +45,7 @@ watch(
       class="w-20px h-20px cursor-pointer rounded-2px border-solid border-gray-300 border-2px text-center leading-20px mb-5px"
       :class="{ 'is-active': colorVal === item }"
       :style="{
-        background: item
+        background: item,
       }"
       @click="colorVal = item"
     >

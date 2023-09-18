@@ -26,7 +26,10 @@ getTableDet()
 </script>
 
 <template>
-  <ContentDetailWrap :title="t('exampleDemo.detail')" @back="push('/example/example-page')">
+  <ContentDetailWrap
+    :title="t('exampleDemo.detail')"
+    @back="push('/example/example-page')"
+  >
     <Detail :current-row="currentRow" />
   </ContentDetailWrap>
 </template>

@@ -1,7 +1,20 @@
 <script setup lang="ts">
-import { onBeforeUnmount, computed, PropType, unref, nextTick, ref, watch, shallowRef } from 'vue'
+import {
+  onBeforeUnmount,
+  computed,
+  PropType,
+  unref,
+  nextTick,
+  ref,
+  watch,
+  shallowRef,
+} from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { IDomEditor, IEditorConfig, i18nChangeLanguage } from '@wangeditor/editor'
+import {
+  IDomEditor,
+  IEditorConfig,
+  i18nChangeLanguage,
+} from '@wangeditor/editor'
 import { propTypes } from '@/utils/propTypes'
 import { isNumber } from '@/utils/is'
 import { ElMessage } from 'element-plus'
@@ -18,9 +31,9 @@ const props = defineProps({
   height: propTypes.oneOfType([Number, String]).def('500px'),
   editorConfig: {
     type: Object as PropType<IEditorConfig>,
-    default: () => undefined
+    default: () => undefined,
   },
-  modelValue: propTypes.string.def('')
+  modelValue: propTypes.string.def(''),
 })
 
 const emit = defineEmits(['change', 'update:modelValue'])
@@ -37,7 +50,7 @@ watch(
     valueHtml.value = val
   },
   {
-    immediate: true
+    immediate: true,
   }
 )
 
@@ -79,7 +92,7 @@ const editorConfig = computed((): IEditorConfig => {
       },
       autoFocus: false,
       scroll: true,
-      uploadImgShowBase64: true
+      uploadImgShowBase64: true,
     },
     props.editorConfig || {}
   )
@@ -87,7 +100,7 @@ const editorConfig = computed((): IEditorConfig => {
 
 const editorStyle = computed(() => {
   return {
-    height: isNumber(props.height) ? `${props.height}px` : props.height
+    height: isNumber(props.height) ? `${props.height}px` : props.height,
   }
 })
 
@@ -111,12 +124,14 @@ const getEditorRef = async (): Promise<IDomEditor> => {
 }
 
 defineExpose({
-  getEditorRef
+  getEditorRef,
 })
 </script>
 
 <template>
-  <div class="border-1 border-solid border-[var(--tags-view-border-color)] z-99">
+  <div
+    class="border-1 border-solid border-[var(--tags-view-border-color)] z-99"
+  >
     <!-- 工具栏 -->
     <Toolbar
       :editor="editorRef"

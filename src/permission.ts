@@ -34,14 +34,17 @@ const whiteList = ['/login'] // 不重定向白名单
 const roleHandlers = (roleRouters) => {
   return {
     admin: async () => {
-      await permissionStore.generateRoutes('admin', roleRouters as AppCustomRouteRecordRaw[])
+      await permissionStore.generateRoutes(
+        'admin',
+        roleRouters as AppCustomRouteRecordRaw[]
+      )
     },
     test: async () => {
       await permissionStore.generateRoutes('test', roleRouters as string[])
     },
     effect: async () => {
       await permissionStore.generateRoutes('effect', roleRouters as string[])
-    }
+    },
   }
 }
 
@@ -84,7 +87,8 @@ router.beforeEach(async (to, from, next) => {
       })
       const redirectPath = from.query.redirect || to.path
       const redirect = decodeURIComponent(redirectPath as string)
-      const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect }
+      const nextData =
+        to.path === redirect ? { ...to, replace: true } : { path: redirect }
       permissionStore.setIsAddRouters(true)
       next(nextData)
     }

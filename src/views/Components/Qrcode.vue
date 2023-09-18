@@ -30,7 +30,10 @@ const disabledClick = () => {
 </script>
 
 <template>
-  <ContentWrap :title="t('qrcodeDemo.qrcode')" :message="t('qrcodeDemo.qrcodeDes')">
+  <ContentWrap
+    :title="t('qrcodeDemo.qrcode')"
+    :message="t('qrcodeDemo.qrcodeDes')"
+  >
     <ElRow :gutter="20" justify="space-between">
       <ElCol :xl="6" :lg="6" :md="12" :sm="24" :xs="24">
         <ElCard shadow="hover" class="mb-10px text-center">
@@ -52,8 +55,8 @@ const disabledClick = () => {
             :options="{
               color: {
                 dark: '#55D187',
-                light: '#2d8cf0'
-              }
+                light: '#2d8cf0',
+              },
             }"
           />
         </ElCard>
@@ -92,7 +95,7 @@ const disabledClick = () => {
               logoSize: 0.2,
               borderSize: 0.05,
               borderRadius: 50,
-              bgColor: 'blue'
+              bgColor: 'blue',
             }"
           />
         </ElCard>

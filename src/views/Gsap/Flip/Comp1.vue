@@ -10,9 +10,14 @@
   <div class="bd">
     <ElButton type="primary" @click="inserBefore">insetBefore</ElButton>
     <ul class="row-container">
-      <li class="row" :class="f.isActive ? 'is-active' : null" v-for="(f, i) in frameworks" :key="i"
-        >{{ f.name }} - {{ f.votes }}</li
+      <li
+        class="row"
+        :class="f.isActive ? 'is-active' : null"
+        v-for="(f, i) in frameworks"
+        :key="i"
       >
+        {{ f.name }} - {{ f.votes }}
+      </li>
     </ul>
   </div>
 </template>
@@ -22,7 +27,7 @@ import { ElButton } from 'element-plus'
 const frameworks = ref([
   { name: '222', votes: 0, isActive: true },
   { name: '333', votes: 0, isActive: false },
-  { name: '444', votes: 0, isActive: false }
+  { name: '444', votes: 0, isActive: false },
 ])
 
 const Dom = reactive({
@@ -30,7 +35,7 @@ const Dom = reactive({
   last: null,
   firstTop: 0,
   lastTop: 0,
-  Container: null
+  Container: null,
 })
 onMounted(() => {
   Dom.first = document.querySelector('.row:first-child')
@@ -50,7 +55,7 @@ function inserBefore() {
     [{ transform: `translateY(${invert}px)` }, { transform: 'translateY(0)' }],
     {
       duration: 300,
-      easing: 'cubic-bezier(0,0,0.32,1)'
+      easing: 'cubic-bezier(0,0,0.32,1)',
     }
   )
 }

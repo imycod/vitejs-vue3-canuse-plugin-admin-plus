@@ -15,19 +15,19 @@ export default function useQuarter() {
         { index: 0, label: 'Q1' },
         { index: 1, label: 'Q2' },
         { index: 2, label: 'Q3' },
-        { index: 3, label: 'Q4' }
+        { index: 3, label: 'Q4' },
       ], // 0
       // 2 月度考核
       generateMonthOptions(),
       [
         // 1 半年考核
         { index: 0, label: 'H1' },
-        { index: 1, label: 'H2' }
+        { index: 1, label: 'H2' },
       ],
       [
         // 3 年度考核
-        { index: 0, label: 'Y1' }
-      ]
+        { index: 0, label: 'Y1' },
+      ],
     ]
 
     return ls[v]
@@ -40,23 +40,23 @@ export default function useQuarter() {
       0: {
         // 季度考核
         divisor: 3,
-        round: Math.ceil
+        round: Math.ceil,
       },
       2: {
         // 半年度考核
         divisor: 6,
-        round: Math.ceil
+        round: Math.ceil,
       },
       1: {
         // 月度考核
         divisor: 1,
-        round: Math.round
+        round: Math.round,
       },
       3: {
         // 年度
         divisor: null,
-        round: null
-      }
+        round: null,
+      },
     }
     const period = periods[assessCycle]
     let index = 0
@@ -78,7 +78,7 @@ export default function useQuarter() {
     for (let i = 0; i < 12; i++) {
       const obj = {
         index: `${i}`,
-        label: `M${i + 1}`
+        label: `M${i + 1}`,
       }
       ls.push(obj)
     }
@@ -87,6 +87,6 @@ export default function useQuarter() {
 
   return {
     getBasQuarters,
-    getCycleQuarterOptions
+    getCycleQuarterOptions,
   }
 }

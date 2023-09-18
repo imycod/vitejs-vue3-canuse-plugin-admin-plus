@@ -13,7 +13,7 @@ export interface TagsViewState {
 export const useTagsViewStore = defineStore('tagsView', {
   state: (): TagsViewState => ({
     visitedViews: [],
-    cachedViews: new Set()
+    cachedViews: new Set(),
   }),
   getters: {
     getVisitedViews(): RouteLocationNormalizedLoaded[] {
@@ -21,7 +21,7 @@ export const useTagsViewStore = defineStore('tagsView', {
     },
     getCachedViews(): string[] {
       return Array.from(this.cachedViews)
-    }
+    },
   },
   actions: {
     // 新增缓存和tag
@@ -35,7 +35,7 @@ export const useTagsViewStore = defineStore('tagsView', {
       if (view.meta?.noTagsView) return
       this.visitedViews.push(
         Object.assign({}, view, {
-          title: view.meta?.title || 'no-name'
+          title: view.meta?.title || 'no-name',
         })
       )
     },
@@ -51,7 +51,10 @@ export const useTagsViewStore = defineStore('tagsView', {
         const name = item.name as string
         cacheMap.add(name)
       }
-      if (Array.from(this.cachedViews).sort().toString() === Array.from(cacheMap).sort().toString())
+      if (
+        Array.from(this.cachedViews).sort().toString() ===
+        Array.from(cacheMap).sort().toString()
+      )
         return
       this.cachedViews = cacheMap
     },
@@ -72,7 +75,10 @@ export const useTagsViewStore = defineStore('tagsView', {
     // 删除缓存
     delCachedView() {
       const route = router.currentRoute.value
-      const index = findIndex<string>(this.getCachedViews, (v) => v === route.name)
+      const index = findIndex<string>(
+        this.getCachedViews,
+        (v) => v === route.name
+      )
       if (index > -1) {
         this.cachedViews.delete(this.getCachedViews[index])
       }
@@ -131,8 +137,8 @@ export const useTagsViewStore = defineStore('tagsView', {
           break
         }
       }
-    }
-  }
+    },
+  },
 })
 
 export const useTagsViewStoreWithOut = () => {

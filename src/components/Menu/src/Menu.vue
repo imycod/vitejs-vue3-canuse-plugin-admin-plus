@@ -18,8 +18,8 @@ export default defineComponent({
   props: {
     menuSelect: {
       type: Function as PropType<(index: string) => void>,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   setup(props) {
     const appStore = useAppStore()
@@ -42,7 +42,9 @@ export default defineComponent({
     })
 
     const routers = computed(() =>
-      unref(layout) === 'cutMenu' ? permissionStore.getMenuTabRouters : permissionStore.getRouters
+      unref(layout) === 'cutMenu'
+        ? permissionStore.getMenuTabRouters
+        : permissionStore.getRouters
     )
 
     const collapse = computed(() => appStore.getCollapse)
@@ -84,7 +86,9 @@ export default defineComponent({
           defaultActive={unref(activeMenu)}
           mode={unref(menuMode)}
           collapse={
-            unref(layout) === 'top' || unref(layout) === 'cutMenu' ? false : unref(collapse)
+            unref(layout) === 'top' || unref(layout) === 'cutMenu'
+              ? false
+              : unref(collapse)
           }
           uniqueOpened={unref(layout) === 'top' ? false : unref(uniqueOpened)}
           backgroundColor="var(--left-menu-bg-color)"
@@ -96,7 +100,7 @@ export default defineComponent({
             default: () => {
               const { renderMenuItem } = useRenderMenuItem(unref(menuMode))
               return renderMenuItem(unref(routers))
-            }
+            },
           }}
         </ElMenu>
       )
@@ -109,15 +113,17 @@ export default defineComponent({
           `${prefixCls} ${prefixCls}__${unref(menuMode)}`,
           'h-[100%] overflow-hidden flex-col bg-[var(--left-menu-bg-color)]',
           {
-            'w-[var(--left-menu-min-width)]': unref(collapse) && unref(layout) !== 'cutMenu',
-            'w-[var(--left-menu-max-width)]': !unref(collapse) && unref(layout) !== 'cutMenu'
-          }
+            'w-[var(--left-menu-min-width)]':
+              unref(collapse) && unref(layout) !== 'cutMenu',
+            'w-[var(--left-menu-max-width)]':
+              !unref(collapse) && unref(layout) !== 'cutMenu',
+          },
         ]}
       >
         {renderMenuWrap()}
       </div>
     )
-  }
+  },
 })
 </script>
 

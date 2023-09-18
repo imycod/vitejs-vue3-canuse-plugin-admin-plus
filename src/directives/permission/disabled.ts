@@ -9,7 +9,7 @@ const mounted = (el: Element, binding: DirectiveBinding<any>) => {
 }
 
 const disabledDirective: Directive = {
-  mounted
+  mounted,
 }
 export const setupDisabledDirective = (app: App<Element>) => {
   app.directive('disabled', disabledDirective)

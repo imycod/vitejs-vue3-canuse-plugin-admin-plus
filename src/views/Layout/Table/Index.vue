@@ -21,8 +21,8 @@ const { register, tableObject, methods } = useTable<TableData>({
   delListApi: delTableListApi,
   response: {
     list: 'list',
-    total: 'total'
-  }
+    total: 'total',
+  },
 })
 
 const { getList, setSearchParams } = methods
@@ -35,22 +35,22 @@ const crudSchemas = reactive<CrudSchema[]>([
   {
     field: 'index',
     label: t('tableDemo.index'),
-    type: 'index'
+    type: 'index',
   },
   {
     field: 'title',
     label: t('tableDemo.title'),
     search: {
-      show: true
-    }
+      show: true,
+    },
   },
   {
     field: 'author',
-    label: t('tableDemo.author')
+    label: t('tableDemo.author'),
   },
   {
     field: 'display_time',
-    label: t('tableDemo.displayTime')
+    label: t('tableDemo.displayTime'),
   },
   {
     field: 'importance',
@@ -59,7 +59,12 @@ const crudSchemas = reactive<CrudSchema[]>([
       return h(
         ElTag,
         {
-          type: cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'
+          type:
+            cellValue === 1
+              ? 'success'
+              : cellValue === 2
+              ? 'warning'
+              : 'danger',
         },
         () =>
           cellValue === 1
@@ -68,24 +73,24 @@ const crudSchemas = reactive<CrudSchema[]>([
             ? t('tableDemo.good')
             : t('tableDemo.commonly')
       )
-    }
+    },
   },
   {
     field: 'pageviews',
-    label: t('tableDemo.pageviews')
+    label: t('tableDemo.pageviews'),
   },
   {
     field: 'content',
     label: t('exampleDemo.content'),
     table: {
-      show: false
-    }
+      show: false,
+    },
   },
   {
     field: 'action',
     width: '260px',
-    label: t('tableDemo.action')
-  }
+    label: t('tableDemo.action'),
+  },
 ])
 
 const { allSchemas } = useCrudSchemas(crudSchemas)
@@ -106,7 +111,9 @@ const delData = async (row: TableData | null, multiple: boolean) => {
   const selections = await getSelections()
   delLoading.value = true
   await delList(
-    multiple ? selections.map((v) => v.id) : [tableObject.currentRow?.id as string],
+    multiple
+      ? selections.map((v) => v.id)
+      : [tableObject.currentRow?.id as string],
     multiple
   ).finally(() => {
     delLoading.value = false
@@ -120,11 +127,21 @@ onMounted(() => {
 
 <template>
   <ContentWrap>
-    <Search :schema="allSchemas.searchSchema" @search="setSearchParams" @reset="setSearchParams" />
+    <Search
+      :schema="allSchemas.searchSchema"
+      @search="setSearchParams"
+      @reset="setSearchParams"
+    />
 
     <div class="mb-10px">
-      <ElButton type="primary" @click="AddAction">{{ t('exampleDemo.add') }}</ElButton>
-      <ElButton :loading="delLoading" type="danger" @click="delData(null, true)">
+      <ElButton type="primary" @click="AddAction">{{
+        t('exampleDemo.add')
+      }}</ElButton>
+      <ElButton
+        :loading="delLoading"
+        type="danger"
+        @click="delData(null, true)"
+      >
         {{ t('exampleDemo.del') }}
       </ElButton>
     </div>
@@ -135,7 +152,7 @@ onMounted(() => {
       :data="tableObject.tableList"
       :loading="tableObject.loading"
       :pagination="{
-        total: tableObject.total
+        total: tableObject.total,
       }"
       @register="register"
     >

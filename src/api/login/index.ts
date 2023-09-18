@@ -39,7 +39,9 @@ export const getAdminRoleApi = (
   return request.get({ url: '/role/list', params })
 }
 
-export const getTestRoleApi = (params: RoleParams): Promise<IResponse<string[]>> => {
+export const getTestRoleApi = (
+  params: RoleParams
+): Promise<IResponse<string[]>> => {
   return request.get({ url: '/role/list', params })
 }
 
@@ -51,9 +53,9 @@ export const getRefreshTokenApi = async () => {
   promise = new Promise(async (resolve) => {
     const params = {
       headers: {
-        Authorization: `Bearer ${getRefreshToken()}`
+        Authorization: `Bearer ${getRefreshToken()}`,
       },
-      __isRefreshToken: true
+      __isRefreshToken: true,
     }
     const resp = await request.get('/refresh_token', params)
     resolve(resp.code === 0)

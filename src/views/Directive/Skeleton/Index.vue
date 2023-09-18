@@ -12,7 +12,12 @@
     <div class="container-box" v-skeleton-style></div>
     <div class="box" v-skeleton-item-style></div>
     <div class="container-box" v-skeleton="{ count: 18, loading: loading }">
-      <div class="box" v-skeleton-item v-for="(item, index) in list" :key="index">
+      <div
+        class="box"
+        v-skeleton-item
+        v-for="(item, index) in list"
+        :key="index"
+      >
         {{ item }} - {{ index }}
       </div>
     </div>
@@ -36,7 +41,7 @@ function animation(config) {
       duration: 0.5,
       opacity: 0,
       stagger: 0.1,
-      ease: 'back.in'
+      ease: 'back.in',
     }
     direction === 'x' ? (option.x = x) : (option.y = y)
     gsap.from(target, option)
@@ -49,7 +54,7 @@ function initAnimate() {
     item.classList.add('animated')
     animation({
       target: item,
-      direction: 'y'
+      direction: 'y',
     })
   })
 }
@@ -76,9 +81,17 @@ function getList(init = false) {
             'item3',
             'item1',
             'item2',
-            'item3'
+            'item3',
           ])
-        : resolve([...list.value, 'item2', 'item3', 'item1', 'item2', 'item3', 'item1'])
+        : resolve([
+            ...list.value,
+            'item2',
+            'item3',
+            'item1',
+            'item2',
+            'item3',
+            'item1',
+          ])
     }, 500)
   })
 }

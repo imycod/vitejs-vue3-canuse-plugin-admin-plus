@@ -36,7 +36,11 @@ export const underlineToHump = (str: string): string => {
   })
 }
 
-export const setCssVar = (prop: string, val: any, dom = document.documentElement) => {
+export const setCssVar = (
+  prop: string,
+  val: any,
+  dom = document.documentElement
+) => {
   dom.style.setProperty(prop, val)
 }
 
@@ -80,16 +84,21 @@ export function formatTime(time: Date | number | string, fmt: string) {
       'm+': date.getMinutes(),
       's+': date.getSeconds(),
       'q+': Math.floor((date.getMonth() + 3) / 3),
-      S: date.getMilliseconds()
+      S: date.getMilliseconds(),
     }
     if (/(y+)/.test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+      fmt = fmt.replace(
+        RegExp.$1,
+        (date.getFullYear() + '').substr(4 - RegExp.$1.length)
+      )
     }
     for (const k in o) {
       if (new RegExp('(' + k + ')').test(fmt)) {
         fmt = fmt.replace(
           RegExp.$1,
-          RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length)
+          RegExp.$1.length === 1
+            ? o[k]
+            : ('00' + o[k]).substr(('' + o[k]).length)
         )
       }
     }
@@ -101,10 +110,13 @@ export function formatTime(time: Date | number | string, fmt: string) {
  * 生成随机字符串
  */
 export function toAnyString() {
-  const str: string = 'xxxxx-xxxxx-4xxxx-yxxxx-xxxxx'.replace(/[xy]/g, (c: string) => {
-    const r: number = (Math.random() * 16) | 0
-    const v: number = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString()
-  })
+  const str: string = 'xxxxx-xxxxx-4xxxx-yxxxx-xxxxx'.replace(
+    /[xy]/g,
+    (c: string) => {
+      const r: number = (Math.random() * 16) | 0
+      const v: number = c === 'x' ? r : (r & 0x3) | 0x8
+      return v.toString()
+    }
+  )
   return str
 }

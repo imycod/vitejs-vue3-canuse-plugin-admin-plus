@@ -14,7 +14,7 @@ export function createImageViewer(options: ImageViewerProps) {
     hideOnClickModal = false,
     appendToBody = false,
     zIndex = 2000,
-    show = true
+    show = true,
   } = options
 
   const propsData: Partial<ImageViewerProps> = {}

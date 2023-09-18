@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { reactive, computed, watch, onMounted, unref, toRef, PropType } from 'vue'
+import {
+  reactive,
+  computed,
+  watch,
+  onMounted,
+  unref,
+  toRef,
+  PropType,
+} from 'vue'
 import { isNumber } from '@/utils/is'
 import { propTypes } from '@/utils/propTypes'
 import { useDesign } from '@/hooks/web/useDesign'
@@ -20,11 +28,13 @@ const props = defineProps({
   suffix: propTypes.string.def(''),
   useEasing: propTypes.bool.def(true),
   easingFn: {
-    type: Function as PropType<(t: number, b: number, c: number, d: number) => number>,
+    type: Function as PropType<
+      (t: number, b: number, c: number, d: number) => number
+    >,
     default(t: number, b: number, c: number, d: number) {
       return (c * (-Math.pow(2, (-10 * t) / d) + 1) * 1024) / 1023 + b
-    }
-  }
+    },
+  },
 })
 
 const emit = defineEmits(['mounted', 'callback'])
@@ -64,7 +74,7 @@ const state = reactive<{
   startTime: null,
   timestamp: null,
   remaining: null,
-  rAF: null
+  rAF: null,
 })
 
 const displayValue = toRef(state, 'displayValue')
@@ -132,7 +142,12 @@ const count = (timestamp: number) => {
     if (unref(getCountDown)) {
       state.printVal =
         state.localStartVal -
-        easingFn(progress, 0, state.localStartVal - endVal, state.localDuration as number)
+        easingFn(
+          progress,
+          0,
+          state.localStartVal - endVal,
+          state.localDuration as number
+        )
     } else {
       state.printVal = easingFn(
         progress,
@@ -145,11 +160,13 @@ const count = (timestamp: number) => {
     if (unref(getCountDown)) {
       state.printVal =
         state.localStartVal -
-        (state.localStartVal - endVal) * (progress / (state.localDuration as number))
+        (state.localStartVal - endVal) *
+          (progress / (state.localDuration as number))
     } else {
       state.printVal =
         state.localStartVal +
-        (endVal - state.localStartVal) * (progress / (state.localDuration as number))
+        (endVal - state.localStartVal) *
+          (progress / (state.localDuration as number))
     }
   }
   if (unref(getCountDown)) {
@@ -169,7 +186,7 @@ defineExpose({
   pauseResume,
   reset,
   start,
-  pause
+  pause,
 })
 </script>
 

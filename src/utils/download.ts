@@ -48,7 +48,7 @@ const downloadZip = (
   const promises = []
   const loadingInstance = ElLoading.service({
     text: '文件正在下载，请耐心等待',
-    fullscreen: false
+    fullscreen: false,
   })
   for (const item of fileList) {
     const rawUrl = item[prop]

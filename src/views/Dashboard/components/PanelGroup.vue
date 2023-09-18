@@ -19,7 +19,7 @@ let totalState = reactive<AnalysisTotalTypes>({
   users: 0,
   messages: 0,
   moneys: 0,
-  shoppings: 0
+  shoppings: 0,
 })
 
 const getCount = async () => {
@@ -49,9 +49,11 @@ getCount()
                 </div>
               </div>
               <div class="flex flex-col justify-between">
-                <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`">{{
-                  t('analysis.newUser')
-                }}</div>
+                <div
+                  :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
+                >
+                  {{ t('analysis.newUser') }}
+                </div>
                 <CountTo
                   class="text-20px font-700 text-right"
                   :start-val="0"
@@ -78,9 +80,11 @@ getCount()
                 </div>
               </div>
               <div class="flex flex-col justify-between">
-                <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`">{{
-                  t('analysis.unreadInformation')
-                }}</div>
+                <div
+                  :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
+                >
+                  {{ t('analysis.unreadInformation') }}
+                </div>
                 <CountTo
                   class="text-20px font-700 text-right"
                   :start-val="0"
@@ -107,9 +111,11 @@ getCount()
                 </div>
               </div>
               <div class="flex flex-col justify-between">
-                <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`">{{
-                  t('analysis.transactionAmount')
-                }}</div>
+                <div
+                  :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
+                >
+                  {{ t('analysis.transactionAmount') }}
+                </div>
                 <CountTo
                   class="text-20px font-700 text-right"
                   :start-val="0"
@@ -136,9 +142,11 @@ getCount()
                 </div>
               </div>
               <div class="flex flex-col justify-between">
-                <div :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`">{{
-                  t('analysis.totalShopping')
-                }}</div>
+                <div
+                  :class="`${prefixCls}__item--text text-16px text-gray-500 text-right`"
+                >
+                  {{ t('analysis.totalShopping') }}
+                </div>
                 <CountTo
                   class="text-20px font-700 text-right"
                   :start-val="0"

@@ -16,8 +16,8 @@ const props = defineProps({
     validator: function (value: string) {
       return ['top', 'bottom'].indexOf(value) !== -1
     },
-    default: 'top'
-  }
+    default: 'top',
+  },
 })
 const width = ref('auto' as string)
 const height = ref('auto' as string)
@@ -41,7 +41,10 @@ const camelize = (str: string): string => {
   return str.replace(/-(\w)/g, (_, c) => (c ? c.toUpperCase() : ''))
 }
 
-const getStyle = (element: HTMLElement, styleName: keyof CSSProperties): string => {
+const getStyle = (
+  element: HTMLElement,
+  styleName: keyof CSSProperties
+): string => {
   if (!isClient || !element || !styleName) return ''
 
   let key = camelize(styleName)
@@ -61,7 +64,7 @@ const isScroll = (el: HTMLElement, isVertical?: boolean): boolean => {
     {
       undefined: 'overflow',
       true: 'overflow-y',
-      false: 'overflow-x'
+      false: 'overflow-x',
     } as const
   )[String(isVertical)]!
   const overflow = getStyle(el, key)
@@ -75,7 +78,8 @@ const getScrollContainer = (
   if (!isClient) return
   let parent = el
   while (parent) {
-    if ([window, document, document.documentElement].includes(parent)) return window
+    if ([window, document, document.documentElement].includes(parent))
+      return window
     if (isScroll(parent, isVertical)) return parent
     parent = parent.parentNode as HTMLElement
   }
@@ -94,7 +98,10 @@ const handleScroll = () => {
   } else {
     const offsetBottom = refSticky.value?.getBoundingClientRect().bottom
 
-    if (offsetBottom !== undefined && offsetBottom > windowHeight.value - props.offset) {
+    if (
+      offsetBottom !== undefined &&
+      offsetBottom > windowHeight.value - props.offset
+    ) {
       sticky()
       return
     }
@@ -130,7 +137,7 @@ const reset = () => {
         zIndex: zIndex,
         position: isSticky ? 'fixed' : 'static',
         width: width,
-        height: height
+        height: height,
       }"
     >
       <slot>

@@ -23,8 +23,8 @@ const schema = reactive<FormSchema[]>([
     label: t('formDemo.input'),
     component: 'Input',
     formItemProps: {
-      rules: [required()]
-    }
+      rules: [required()],
+    },
   },
   {
     field: 'field2',
@@ -34,14 +34,14 @@ const schema = reactive<FormSchema[]>([
       options: [
         {
           label: 'option1',
-          value: '1'
+          value: '1',
         },
         {
           label: 'option2',
-          value: '2'
-        }
-      ]
-    }
+          value: '2',
+        },
+      ],
+    },
   },
   {
     field: 'field3',
@@ -51,14 +51,14 @@ const schema = reactive<FormSchema[]>([
       options: [
         {
           label: 'option-1',
-          value: '1'
+          value: '1',
         },
         {
           label: 'option-2',
-          value: '2'
-        }
-      ]
-    }
+          value: '2',
+        },
+      ],
+    },
   },
   {
     field: 'field4',
@@ -69,32 +69,32 @@ const schema = reactive<FormSchema[]>([
       options: [
         {
           label: 'option-1',
-          value: '1'
+          value: '1',
         },
         {
           label: 'option-2',
-          value: '2'
+          value: '2',
         },
         {
           label: 'option-3',
-          value: '3'
-        }
-      ]
-    }
+          value: '3',
+        },
+      ],
+    },
   },
   {
     field: 'field5',
     component: 'DatePicker',
     label: t('formDemo.datePicker'),
     componentProps: {
-      type: 'date'
-    }
+      type: 'date',
+    },
   },
   {
     field: 'field6',
     component: 'TimeSelect',
-    label: t('formDemo.timeSelect')
-  }
+    label: t('formDemo.timeSelect'),
+  },
 ])
 
 const getDictOne = async () => {
@@ -121,7 +121,10 @@ const formSubmit = () => {
 </script>
 
 <template>
-  <ContentWrap :title="t('dialogDemo.dialog')" :message="t('dialogDemo.dialogDes')">
+  <ContentWrap
+    :title="t('dialogDemo.dialog')"
+    :message="t('dialogDemo.dialogDes')"
+  >
     <ElButton type="primary" @click="dialogVisible = !dialogVisible">
       {{ t('dialogDemo.open') }}
     </ElButton>
@@ -133,15 +136,21 @@ const formSubmit = () => {
     <Dialog v-model="dialogVisible" :title="t('dialogDemo.dialog')">
       <div v-for="v in 10000" :key="v">{{ v }}</div>
       <template #footer>
-        <ElButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</ElButton>
+        <ElButton @click="dialogVisible = false">{{
+          t('dialogDemo.close')
+        }}</ElButton>
       </template>
     </Dialog>
 
     <Dialog v-model="dialogVisible2" :title="t('dialogDemo.dialog')">
       <Form ref="formRef" :schema="schema" />
       <template #footer>
-        <ElButton type="primary" @click="formSubmit">{{ t('dialogDemo.submit') }}</ElButton>
-        <ElButton @click="dialogVisible2 = false">{{ t('dialogDemo.close') }}</ElButton>
+        <ElButton type="primary" @click="formSubmit">{{
+          t('dialogDemo.submit')
+        }}</ElButton>
+        <ElButton @click="dialogVisible2 = false">{{
+          t('dialogDemo.close')
+        }}</ElButton>
       </template>
     </Dialog>
   </ContentWrap>

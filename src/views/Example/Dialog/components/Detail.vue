@@ -11,19 +11,27 @@ const { t } = useI18n()
 defineProps({
   currentRow: {
     type: Object as PropType<Nullable<TableData>>,
-    default: () => null
+    default: () => null,
   },
   detailSchema: {
     type: Array as PropType<DescriptionsSchema[]>,
-    default: () => []
-  }
+    default: () => [],
+  },
 })
 </script>
 
 <template>
   <Descriptions :schema="detailSchema" :data="currentRow || {}">
     <template #importance="{ row }: { row: TableData }">
-      <ElTag :type="row.importance === 1 ? 'success' : row.importance === 2 ? 'warning' : 'danger'">
+      <ElTag
+        :type="
+          row.importance === 1
+            ? 'success'
+            : row.importance === 2
+            ? 'warning'
+            : 'danger'
+        "
+      >
         {{
           row.importance === 1
             ? t('tableDemo.important')

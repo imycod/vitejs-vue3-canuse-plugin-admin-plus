@@ -24,7 +24,9 @@ onBeforeUnmount(() => {
     <ElButton type="primary" @click="setWatermark(title)">
       {{ t('watermarkDemo.createdWatermark') }}
     </ElButton>
-    <ElButton type="danger" @click="clear">{{ t('watermarkDemo.clearWatermark') }}</ElButton>
+    <ElButton type="danger" @click="clear">{{
+      t('watermarkDemo.clearWatermark')
+    }}</ElButton>
     <ElButton type="warning" @click="setWatermark(`New${title}`)">
       {{ t('watermarkDemo.resetWatermark') }}
     </ElButton>

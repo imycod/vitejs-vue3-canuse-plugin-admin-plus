@@ -10,7 +10,9 @@
   <div class="bd">
     <ElButton type="primary" @click="add">add</ElButton>
     <ul class="row-container">
-      <li class="row bd" v-for="(f, i) in frameworks" :key="i">{{ f.name }} - {{ f.votes }}</li>
+      <li class="row bd" v-for="(f, i) in frameworks" :key="i">
+        {{ f.name }} - {{ f.votes }}
+      </li>
     </ul>
   </div>
 </template>
@@ -21,13 +23,13 @@ import { Flip } from '@/utils/domUtils'
 const frameworks = ref([
   { name: '222', votes: 0 },
   { name: '333', votes: 0 },
-  { name: '444', votes: 0 }
+  { name: '444', votes: 0 },
 ])
 
 function add() {
   frameworks.value.unshift({
     name: '444',
-    votes: 0
+    votes: 0,
   })
 }
 </script>

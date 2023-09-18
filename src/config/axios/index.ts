@@ -15,7 +15,8 @@ const { default_headers } = config
 const request = (option: any) => {
   console.log('option---', option)
 
-  const { url, method, params, data, headersType, responseType, headers } = option
+  const { url, method, params, data, headersType, responseType, headers } =
+    option
   return service({
     url: url,
     method,
@@ -24,8 +25,8 @@ const request = (option: any) => {
     responseType: responseType,
     headers: {
       'Content-Type': headersType || default_headers,
-      Authorization: headers?.Authorization || ''
-    }
+      Authorization: headers?.Authorization || '',
+    },
   })
 }
 export default {
@@ -40,5 +41,5 @@ export default {
   },
   put: <T = any>(option: any) => {
     return request({ method: 'put', ...option }) as unknown as T
-  }
+  },
 }

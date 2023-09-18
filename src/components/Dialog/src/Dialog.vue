@@ -10,7 +10,7 @@ const props = defineProps({
   modelValue: propTypes.bool.def(false),
   title: propTypes.string.def('Dialog'),
   fullscreen: propTypes.bool.def(true),
-  maxHeight: propTypes.oneOfType([String, Number]).def('500px')
+  maxHeight: propTypes.oneOfType([String, Number]).def('500px'),
 })
 
 const getBindValue = computed(() => {
@@ -31,7 +31,9 @@ const toggleFull = () => {
   isFullscreen.value = !unref(isFullscreen)
 }
 
-const dialogHeight = ref(isNumber(props.maxHeight) ? `${props.maxHeight}px` : props.maxHeight)
+const dialogHeight = ref(
+  isNumber(props.maxHeight) ? `${props.maxHeight}px` : props.maxHeight
+)
 
 watch(
   () => isFullscreen.value,
@@ -39,20 +41,24 @@ watch(
     await nextTick()
     if (val) {
       const windowHeight = document.documentElement.offsetHeight
-      dialogHeight.value = `${windowHeight - 55 - 60 - (slots.footer ? 63 : 0)}px`
+      dialogHeight.value = `${
+        windowHeight - 55 - 60 - (slots.footer ? 63 : 0)
+      }px`
     } else {
-      dialogHeight.value = isNumber(props.maxHeight) ? `${props.maxHeight}px` : props.maxHeight
+      dialogHeight.value = isNumber(props.maxHeight)
+        ? `${props.maxHeight}px`
+        : props.maxHeight
     }
   },
   {
-    immediate: true
+    immediate: true,
   }
 )
 
 const dialogStyle = computed(() => {
   console.log(unref(dialogHeight))
   return {
-    height: unref(dialogHeight)
+    height: unref(dialogHeight),
   }
 })
 </script>

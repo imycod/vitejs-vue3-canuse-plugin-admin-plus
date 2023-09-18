@@ -8,7 +8,11 @@
 -->
 <script setup lang="ts">
 import { ElTabs, ElTabPane, ElButton } from 'element-plus'
-import { setContentFull, getViewportOffset, toggleClass } from '@/utils/domUtils'
+import {
+  setContentFull,
+  getViewportOffset,
+  toggleClass,
+} from '@/utils/domUtils'
 import { getTestFiles } from '@/api/files'
 import { downloadFile } from '@/api/common'
 import gsap from 'gsap'
@@ -17,53 +21,53 @@ const tabList = [
   {
     label: '项目概览',
     compName: 'ProjectOverview',
-    value: '0'
+    value: '0',
   },
   {
     label: '基本信息',
     compName: 'ProjectBasicInfo',
-    value: '1'
+    value: '1',
   },
   {
     label: '项目干系人',
     compName: 'ProjectRelaPeople',
-    value: '2'
+    value: '2',
   },
   {
     label: '工时统计',
     compName: 'ProjectHourStatistics',
-    value: '3'
+    value: '3',
   },
   {
     label: '项目周报',
     compName: 'ProjectWeek',
-    value: '4'
+    value: '4',
   },
   {
     label: '会议纪要',
     compName: 'ProjectMeeting',
-    value: '5'
+    value: '5',
   },
   {
     label: '项目风险',
     compName: 'ProjectRisk',
-    value: '6'
+    value: '6',
   },
   {
     label: '项目任务',
     compName: 'ProjectTask',
-    value: '7'
+    value: '7',
   },
   {
     label: '财务数据',
     compName: 'ProjectFinancial',
-    value: '8'
+    value: '8',
   },
   {
     label: '项目合同',
     compName: 'ProjectContract',
-    value: '9'
-  }
+    value: '9',
+  },
 ]
 const activeName = ref('0')
 async function tabClick(event) {

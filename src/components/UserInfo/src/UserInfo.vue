@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ElDropdown, ElDropdownMenu, ElDropdownItem, ElMessageBox } from 'element-plus'
+import {
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElMessageBox,
+} from 'element-plus'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useCache } from '@/hooks/web/useCache'
 import { resetRouter } from '@/router'
@@ -24,7 +29,7 @@ const loginOut = () => {
   ElMessageBox.confirm(t('common.loginOutMessage'), t('common.reminder'), {
     confirmButtonText: t('common.ok'),
     cancelButtonText: t('common.cancel'),
-    type: 'warning'
+    type: 'warning',
   })
     .then(async () => {
       const res = await loginOutApi().catch(() => {})
@@ -51,7 +56,10 @@ const toDocument = () => {
         alt=""
         class="w-[calc(var(--logo-height)-25px)] rounded-[50%]"
       />
-      <span class="<lg:hidden text-14px pl-[5px] text-[var(--top-header-text-color)]">Archer</span>
+      <span
+        class="<lg:hidden text-14px pl-[5px] text-[var(--top-header-text-color)]"
+        >Archer</span
+      >
     </div>
     <template #dropdown>
       <ElDropdownMenu>

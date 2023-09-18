@@ -23,10 +23,13 @@ function move() {
   box.style.left = '200px'
   const lastRect = box.getBoundingClientRect()
   const invert = firstRect.left - lastRect.left
-  box.animate([{ transform: `translateX(${invert}px)` }, { transform: 'translateX(0)' }], {
-    duration: 400,
-    easing: 'cubic-bezier(0.68, -0.55, 0.27, 0.65)'
-  })
+  box.animate(
+    [{ transform: `translateX(${invert}px)` }, { transform: 'translateX(0)' }],
+    {
+      duration: 400,
+      easing: 'cubic-bezier(0.68, -0.55, 0.27, 0.65)',
+    }
+  )
 }
 </script>
 <style lang="less" scoped>

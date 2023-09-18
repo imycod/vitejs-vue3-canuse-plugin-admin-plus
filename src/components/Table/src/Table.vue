@@ -1,12 +1,25 @@
 <script lang="tsx">
 import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
-import { defineComponent, PropType, ref, computed, unref, watch, onMounted } from 'vue'
+import {
+  defineComponent,
+  PropType,
+  ref,
+  computed,
+  unref,
+  watch,
+  onMounted,
+} from 'vue'
 import { propTypes } from '@/utils/propTypes'
 import { setIndex } from './helper'
 import { getSlot } from '@/utils/tsxHelper'
 import type { TableProps } from './types'
 import { set } from 'lodash-es'
-import { TableColumn, TableSlotDefault, Pagination, TableSetPropsType } from '../../../types/table'
+import {
+  TableColumn,
+  TableSlotDefault,
+  Pagination,
+  TableSetPropsType,
+} from '../../../types/table'
 
 export default defineComponent({
   name: 'Table',
@@ -20,14 +33,14 @@ export default defineComponent({
     // 表头
     columns: {
       type: Array as PropType<TableColumn[]>,
-      default: () => []
+      default: () => [],
     },
     // 展开行
     expand: propTypes.bool.def(false),
     // 是否展示分页
     pagination: {
       type: Object as PropType<Pagination>,
-      default: (): Pagination | undefined => undefined
+      default: (): Pagination | undefined => undefined,
     },
     // 仅对 type=selection 的列有效，类型为 Boolean，为 true 则会在数据更新之后保留之前选中的数据（需指定 row-key）
     reserveSelection: propTypes.bool.def(false),
@@ -45,8 +58,8 @@ export default defineComponent({
       .def('left'),
     data: {
       type: Array as PropType<Recordable[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ['update:pageSize', 'update:currentPage', 'register'],
   setup(props, { attrs, slots, emit, expose }) {
@@ -78,7 +91,10 @@ export default defineComponent({
       outsideProps.value = props
     }
 
-    const setColumn = (columnProps: TableSetPropsType[], columnsChildren?: TableColumn[]) => {
+    const setColumn = (
+      columnProps: TableSetPropsType[],
+      columnsChildren?: TableColumn[]
+    ) => {
       const { columns } = unref(getProps)
       for (const v of columnsChildren || columns) {
         for (const item of columnProps) {
@@ -101,7 +117,7 @@ export default defineComponent({
       setProps,
       setColumn,
       selections,
-      elTableRef
+      elTableRef,
     })
 
     const pagination = computed(() => {
@@ -114,7 +130,7 @@ export default defineComponent({
           pageSizes: [10, 20, 30, 40, 50, 100],
           disabled: false,
           hideOnSinglePage: false,
-          total: 10
+          total: 10,
         },
         unref(getProps).pagination
       )
@@ -156,7 +172,8 @@ export default defineComponent({
     })
 
     const renderTableSelection = () => {
-      const { selection, reserveSelection, align, headerAlign } = unref(getProps)
+      const { selection, reserveSelection, align, headerAlign } =
+        unref(getProps)
       // 渲染多选
       return selection ? (
         <ElTableColumn
@@ -176,7 +193,7 @@ export default defineComponent({
         <ElTableColumn type="expand" align={align} headerAlign={headerAlign}>
           {{
             // @ts-ignore
-            default: (data: TableSlotDefault) => getSlot(slots, 'expand', data)
+            default: (data: TableSlotDefault) => getSlot(slots, 'expand', data),
           }}
         </ElTableColumn>
       ) : undefined
@@ -201,10 +218,15 @@ export default defineComponent({
                   ? rnderTableColumn(v.children)
                   : // @ts-ignore
                     getSlot(slots, v.field, data) ||
-                    v?.formatter?.(data.row, data.column, data.row[v.field], data.$index) ||
+                    v?.formatter?.(
+                      data.row,
+                      data.column,
+                      data.row[v.field],
+                      data.$index
+                    ) ||
                     data.row[v.field],
               // @ts-ignore
-              header: getSlot(slots, `${v.field}-header`)
+              header: getSlot(slots, `${v.field}-header`),
             }}
           </ElTableColumn>
         )
@@ -219,7 +241,7 @@ export default defineComponent({
         currentPage,
         align,
         headerAlign,
-        showOverflowTooltip
+        showOverflowTooltip,
       } = unref(getProps)
       return [...[renderTableExpand()], ...[renderTableSelection()]].concat(
         (columnsChildren || columns).map((v) => {
@@ -231,7 +253,8 @@ export default defineComponent({
                 index={
                   v.index
                     ? v.index
-                    : (index) => setIndex(reserveIndex, index, pageSize, currentPage)
+                    : (index) =>
+                        setIndex(reserveIndex, index, pageSize, currentPage)
                 }
                 align={v.align || align}
                 headerAlign={v.headerAlign || headerAlign}
@@ -256,10 +279,15 @@ export default defineComponent({
                       ? rnderTreeTableColumn(v.children)
                       : // @ts-ignore
                         getSlot(slots, v.field, data) ||
-                        v?.formatter?.(data.row, data.column, data.row[v.field], data.$index) ||
+                        v?.formatter?.(
+                          data.row,
+                          data.column,
+                          data.row[v.field],
+                          data.$index
+                        ) ||
                         data.row[v.field],
                   // @ts-ignore
-                  header: () => getSlot(slots, `${v.field}-header`) || v.label
+                  header: () => getSlot(slots, `${v.field}-header`) || v.label,
                 }}
               </ElTableColumn>
             )
@@ -269,7 +297,10 @@ export default defineComponent({
     }
 
     return () => (
-      <div class="overflow-hidden flex flex-1 flex-col" v-loading={unref(getProps).loading}>
+      <div
+        class="overflow-hidden flex flex-1 flex-col"
+        v-loading={unref(getProps).loading}
+      >
         <ElTable
           // @ts-ignore
           ref={elTableRef}
@@ -280,7 +311,7 @@ export default defineComponent({
           {{
             default: () => rnderTableColumn(),
             // @ts-ignore
-            append: () => getSlot(slots, 'append')
+            append: () => getSlot(slots, 'append'),
           }}
         </ElTable>
         {unref(getProps).pagination ? (
@@ -293,7 +324,7 @@ export default defineComponent({
         ) : undefined}
       </div>
     )
-  }
+  },
 })
 </script>
 

@@ -18,12 +18,12 @@ export default function useModel(moduleName) {
   const querys = {
     demo1: reactive({
       assessCycle: 0,
-      quarter: 0
+      quarter: 0,
     }),
     demo2: reactive({
       assessCycle: 0,
-      quarter: 0
-    })
+      quarter: 0,
+    }),
   }
 
   const model = reactive([
@@ -31,17 +31,17 @@ export default function useModel(moduleName) {
       type: 'select',
       prop: 'assessCycle',
       options: basCycleOptions,
-      label: '考核周期'
+      label: '考核周期',
     },
     {
       type: 'select',
       prop: 'quarter',
       options: getBasQuarters(querys[moduleName]),
-      label: '考核时间'
-    }
+      label: '考核时间',
+    },
   ])
   return {
     querys,
-    model
+    model,
   }
 }

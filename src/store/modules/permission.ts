@@ -8,7 +8,11 @@
  */
 import { defineStore } from 'pinia'
 import { asyncRouterMap, constantRouterMap, effectRouterMap } from '@/router'
-import { generateRoutesFn1, generateRoutesFn2, flatMultiLevelRoutes } from '@/utils/routerHelper'
+import {
+  generateRoutesFn1,
+  generateRoutesFn2,
+  flatMultiLevelRoutes,
+} from '@/utils/routerHelper'
 import { store } from '../index'
 import { cloneDeep } from 'lodash-es'
 
@@ -24,7 +28,7 @@ export const usePermissionStore = defineStore('permission', {
     routers: [],
     addRouters: [],
     isAddRouters: false,
-    menuTabRouters: []
+    menuTabRouters: [],
   }),
   getters: {
     getRouters(): AppRouteRecordRaw[] {
@@ -38,7 +42,7 @@ export const usePermissionStore = defineStore('permission', {
     },
     getMenuTabRouters(): AppRouteRecordRaw[] {
       return this.menuTabRouters
-    }
+    },
   },
   actions: {
     generateRoutes(
@@ -52,7 +56,10 @@ export const usePermissionStore = defineStore('permission', {
           routerMap = generateRoutesFn2(routers as AppCustomRouteRecordRaw[])
         } else if (type === 'test') {
           // 模拟前端过滤菜单
-          routerMap = generateRoutesFn1(cloneDeep(asyncRouterMap), routers as string[])
+          routerMap = generateRoutesFn1(
+            cloneDeep(asyncRouterMap),
+            routers as string[]
+          )
         } else if (type === 'effect') {
           routerMap = cloneDeep(effectRouterMap)
         } else {
@@ -67,9 +74,9 @@ export const usePermissionStore = defineStore('permission', {
             name: '404Page',
             meta: {
               hidden: true,
-              breadcrumb: false
-            }
-          }
+              breadcrumb: false,
+            },
+          },
         ])
         // 渲染菜单的所有路由
         this.routers = cloneDeep(constantRouterMap).concat(routerMap)
@@ -81,8 +88,8 @@ export const usePermissionStore = defineStore('permission', {
     },
     setMenuTabRouters(routers: AppRouteRecordRaw[]): void {
       this.menuTabRouters = routers
-    }
-  }
+    },
+  },
 })
 
 export const usePermissionStoreWithOut = () => {

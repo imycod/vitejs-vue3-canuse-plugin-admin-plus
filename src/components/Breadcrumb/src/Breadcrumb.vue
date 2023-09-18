@@ -1,6 +1,13 @@
 <script lang="tsx">
 import { ElBreadcrumb, ElBreadcrumbItem } from 'element-plus'
-import { ref, watch, computed, unref, defineComponent, TransitionGroup } from 'vue'
+import {
+  ref,
+  watch,
+  computed,
+  unref,
+  defineComponent,
+  TransitionGroup,
+} from 'vue'
 import { useRouter } from 'vue-router'
 import { usePermissionStore } from '@/store/modules/permission'
 import { filterBreadcrumb } from './helper'
@@ -38,9 +45,12 @@ export default defineComponent({
 
     const getBreadcrumb = () => {
       const currentPath = currentRoute.value.matched.slice(-1)[0].path
-      levelList.value = filter<AppRouteRecordRaw>(unref(menuRouters), (node: AppRouteRecordRaw) => {
-        return node.path === currentPath
-      })
+      levelList.value = filter<AppRouteRecordRaw>(
+        unref(menuRouters),
+        (node: AppRouteRecordRaw) => {
+          return node.path === currentPath
+        }
+      )
     }
 
     const renderBreadcrumb = () => {
@@ -52,7 +62,8 @@ export default defineComponent({
           <ElBreadcrumbItem to={{ path: disabled ? '' : v.path }} key={v.name}>
             {meta?.icon && breadcrumbIcon.value ? (
               <>
-                <Icon icon={meta.icon} class="mr-[5px]"></Icon> {t(v?.meta?.title)}
+                <Icon icon={meta.icon} class="mr-[5px]"></Icon>{' '}
+                {t(v?.meta?.title)}
               </>
             ) : (
               t(v?.meta?.title)
@@ -71,18 +82,24 @@ export default defineComponent({
         getBreadcrumb()
       },
       {
-        immediate: true
+        immediate: true,
       }
     )
 
     return () => (
-      <ElBreadcrumb separator="/" class={`${prefixCls} flex items-center h-full ml-[10px]`}>
-        <TransitionGroup appear enter-active-class="animate__animated animate__fadeInRight">
+      <ElBreadcrumb
+        separator="/"
+        class={`${prefixCls} flex items-center h-full ml-[10px]`}
+      >
+        <TransitionGroup
+          appear
+          enter-active-class="animate__animated animate__fadeInRight"
+        >
           {renderBreadcrumb()}
         </TransitionGroup>
       </ElBreadcrumb>
     )
-  }
+  },
 })
 </script>
 

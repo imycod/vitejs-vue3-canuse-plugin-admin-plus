@@ -129,7 +129,12 @@ export function getViewportOffset(element: Element): ViewportOffsetResult {
 
   const box = getBoundingClientRect(element)
 
-  const { left: retLeft, top: rectTop, width: rectWidth, height: rectHeight } = box as DOMRect
+  const {
+    left: retLeft,
+    top: rectTop,
+    width: rectWidth,
+    height: rectHeight,
+  } = box as DOMRect
 
   const scrollLeft = (pageXOffset || docScrollLeft) - (docClientLeft || 0)
   const scrollTop = (pageYOffset || docScrollTop) - (docClientTop || 0)
@@ -147,7 +152,7 @@ export function getViewportOffset(element: Element): ViewportOffsetResult {
     right: clientWidth - rectWidth - left,
     bottom: clientHeight - rectHeight - top,
     rightIncludeBody: clientWidth - left,
-    bottomIncludeBody: clientHeight - top
+    bottomIncludeBody: clientHeight - top,
   }
 }
 
@@ -174,7 +179,11 @@ export const off = function (
 }
 
 /* istanbul ignore next */
-export const once = function (el: HTMLElement, event: string, fn: EventListener): void {
+export const once = function (
+  el: HTMLElement,
+  event: string,
+  fn: EventListener
+): void {
   const listener = function (this: any, ...args: unknown[]) {
     if (fn) {
       // @ts-ignore
@@ -220,8 +229,13 @@ export const getStyle =
           styleName = 'cssFloat'
         }
         try {
-          const computed = (document as any).defaultView.getComputedStyle(element, '')
-          return element.style[styleName] || computed ? computed[styleName] : null
+          const computed = (document as any).defaultView.getComputedStyle(
+            element,
+            ''
+          )
+          return element.style[styleName] || computed
+            ? computed[styleName]
+            : null
         } catch (e) {
           return element.style[styleName]
         }
@@ -240,7 +254,9 @@ export function setStyle(element: Element | any, styleName: any, value: any) {
   } else {
     styleName = camelCase(styleName)
     if (styleName === 'opacity' && ieVersion < 9) {
-      element.style.filter = isNaN(value) ? '' : 'alpha(opacity=' + value * 100 + ')'
+      element.style.filter = isNaN(value)
+        ? ''
+        : 'alpha(opacity=' + value * 100 + ')'
     } else {
       element.style[styleName] = value
     }
@@ -286,12 +302,16 @@ export const isInContainer = (el: Element, container: any) => {
   const elRect = el.getBoundingClientRect()
   let containerRect
 
-  if ([window, document, document.documentElement, null, undefined].includes(container)) {
+  if (
+    [window, document, document.documentElement, null, undefined].includes(
+      container
+    )
+  ) {
     containerRect = {
       top: 0,
       right: window.innerWidth,
       bottom: window.innerHeight,
-      left: 0
+      left: 0,
     }
   } else {
     containerRect = container.getBoundingClientRect()
@@ -374,10 +394,16 @@ export class Flip {
       const { y: last } = rects
 
       const invert = Y - last
-      element.animate([{ transform: `translateY(${invert}px)` }, { transform: 'translateY(0)' }], {
-        duration: 400,
-        easing: 'cubic-bezier(0.68, -0.55, 0.27, 0.65)'
-      })
+      element.animate(
+        [
+          { transform: `translateY(${invert}px)` },
+          { transform: 'translateY(0)' },
+        ],
+        {
+          duration: 400,
+          easing: 'cubic-bezier(0.68, -0.55, 0.27, 0.65)',
+        }
+      )
     }
   }
 }

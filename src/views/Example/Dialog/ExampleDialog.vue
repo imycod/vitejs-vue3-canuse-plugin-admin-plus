@@ -19,11 +19,11 @@ const { register, tableObject, methods } = useTable<TableData>({
   delListApi: delTableListApi,
   response: {
     list: 'list',
-    total: 'total'
+    total: 'total',
   },
   defaultParams: {
-    title: 's'
-  }
+    title: 's',
+  },
 })
 
 const { getList, setSearchParams } = methods
@@ -38,30 +38,30 @@ const crudSchemas = reactive<CrudSchema[]>([
     label: t('tableDemo.index'),
     type: 'index',
     form: {
-      show: false
+      show: false,
     },
     detail: {
-      show: false
-    }
+      show: false,
+    },
   },
   {
     field: 'title',
     label: t('tableDemo.title'),
     search: {
-      show: true
+      show: true,
     },
     form: {
       colProps: {
-        span: 24
-      }
+        span: 24,
+      },
     },
     detail: {
-      span: 24
-    }
+      span: 24,
+    },
   },
   {
     field: 'author',
-    label: t('tableDemo.author')
+    label: t('tableDemo.author'),
   },
   {
     field: 'display_time',
@@ -70,9 +70,9 @@ const crudSchemas = reactive<CrudSchema[]>([
       component: 'DatePicker',
       componentProps: {
         type: 'datetime',
-        valueFormat: 'YYYY-MM-DD HH:mm:ss'
-      }
-    }
+        valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      },
+    },
   },
   {
     field: 'importance',
@@ -81,7 +81,12 @@ const crudSchemas = reactive<CrudSchema[]>([
       return h(
         ElTag,
         {
-          type: cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'
+          type:
+            cellValue === 1
+              ? 'success'
+              : cellValue === 2
+              ? 'warning'
+              : 'danger',
         },
         () =>
           cellValue === 1
@@ -95,60 +100,60 @@ const crudSchemas = reactive<CrudSchema[]>([
       component: 'Select',
       componentProps: {
         style: {
-          width: '100%'
+          width: '100%',
         },
         options: [
           {
             label: '重要',
-            value: 3
+            value: 3,
           },
           {
             label: '良好',
-            value: 2
+            value: 2,
           },
           {
             label: '一般',
-            value: 1
-          }
-        ]
-      }
-    }
+            value: 1,
+          },
+        ],
+      },
+    },
   },
   {
     field: 'pageviews',
     label: t('tableDemo.pageviews'),
     form: {
       component: 'InputNumber',
-      value: 0
-    }
+      value: 0,
+    },
   },
   {
     field: 'content',
     label: t('exampleDemo.content'),
     table: {
-      show: false
+      show: false,
     },
     form: {
       component: 'Editor',
       colProps: {
-        span: 24
-      }
+        span: 24,
+      },
     },
     detail: {
-      span: 24
-    }
+      span: 24,
+    },
   },
   {
     field: 'action',
     width: '260px',
     label: t('tableDemo.action'),
     form: {
-      show: false
+      show: false,
     },
     detail: {
-      show: false
-    }
-  }
+      show: false,
+    },
+  },
 ])
 
 const { allSchemas } = useCrudSchemas(crudSchemas)
@@ -172,7 +177,9 @@ const delData = async (row: TableData | null, multiple: boolean) => {
   const selections = await getSelections()
   delLoading.value = true
   await delList(
-    multiple ? selections.map((v) => v.id) : [tableObject.currentRow?.id as string],
+    multiple
+      ? selections.map((v) => v.id)
+      : [tableObject.currentRow?.id as string],
     multiple
   ).finally(() => {
     delLoading.value = false
@@ -182,7 +189,9 @@ const delData = async (row: TableData | null, multiple: boolean) => {
 const actionType = ref('')
 
 const action = (row: TableData, type: string) => {
-  dialogTitle.value = t(type === 'edit' ? 'exampleDemo.edit' : 'exampleDemo.detail')
+  dialogTitle.value = t(
+    type === 'edit' ? 'exampleDemo.edit' : 'exampleDemo.detail'
+  )
   actionType.value = type
   tableObject.currentRow = row
   dialogVisible.value = true
@@ -223,8 +232,14 @@ const save = async () => {
     />
 
     <div class="mb-10px">
-      <ElButton type="primary" @click="AddAction">{{ t('exampleDemo.add') }}</ElButton>
-      <ElButton :loading="delLoading" type="danger" @click="delData(null, true)">
+      <ElButton type="primary" @click="AddAction">{{
+        t('exampleDemo.add')
+      }}</ElButton>
+      <ElButton
+        :loading="delLoading"
+        type="danger"
+        @click="delData(null, true)"
+      >
         {{ t('exampleDemo.del') }}
       </ElButton>
     </div>
@@ -236,12 +251,16 @@ const save = async () => {
       :data="tableObject.tableList"
       :loading="tableObject.loading"
       :pagination="{
-        total: tableObject.total
+        total: tableObject.total,
       }"
       @register="register"
     >
       <template #action="{ row }">
-        <ElButton type="primary" v-hasPermi="['example:dialog:edit']" @click="action(row, 'edit')">
+        <ElButton
+          type="primary"
+          v-hasPermi="['example:dialog:edit']"
+          @click="action(row, 'edit')"
+        >
           {{ t('exampleDemo.edit') }}
         </ElButton>
         <ElButton
@@ -251,7 +270,11 @@ const save = async () => {
         >
           {{ t('exampleDemo.detail') }}
         </ElButton>
-        <ElButton type="danger" v-hasPermi="['example:dialog:delete']" @click="delData(row, false)">
+        <ElButton
+          type="danger"
+          v-hasPermi="['example:dialog:delete']"
+          @click="delData(row, false)"
+        >
           {{ t('exampleDemo.del') }}
         </ElButton>
       </template>
@@ -273,10 +296,17 @@ const save = async () => {
     />
 
     <template #footer>
-      <ElButton v-if="actionType !== 'detail'" type="primary" :loading="loading" @click="save">
+      <ElButton
+        v-if="actionType !== 'detail'"
+        type="primary"
+        :loading="loading"
+        @click="save"
+      >
         {{ t('exampleDemo.save') }}
       </ElButton>
-      <ElButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</ElButton>
+      <ElButton @click="dialogVisible = false">{{
+        t('dialogDemo.close')
+      }}</ElButton>
     </template>
   </Dialog>
 </template>

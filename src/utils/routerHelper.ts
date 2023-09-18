@@ -4,7 +4,7 @@ import type {
   RouteLocationNormalized,
   RouteRecordNormalized,
   RouteMeta,
-  RouteRecordRaw
+  RouteRecordRaw,
 } from 'vue-router'
 import { isUrl } from '@/utils/is'
 import { omit, cloneDeep } from 'lodash-es'
@@ -21,12 +21,14 @@ export const getParentLayout = () => {
   return () =>
     new Promise((resolve) => {
       resolve({
-        name: 'ParentLayout'
+        name: 'ParentLayout',
       })
     })
 }
 
-export const getRawRoute = (route: RouteLocationNormalized): RouteLocationNormalized => {
+export const getRawRoute = (
+  route: RouteLocationNormalized
+): RouteLocationNormalized => {
   if (!route) return route
   const { matched, ...opt } = route
   return {
@@ -35,9 +37,9 @@ export const getRawRoute = (route: RouteLocationNormalized): RouteLocationNormal
       ? matched.map((item) => ({
           meta: item.meta,
           name: item.name,
-          path: item.path
+          path: item.path,
         }))
-      : undefined) as RouteRecordNormalized[]
+      : undefined) as RouteRecordNormalized[],
   }
 }
 
@@ -63,7 +65,10 @@ export const generateRoutesFn1 = (
       onlyOneChild = (
         isUrl(route.children[0].path)
           ? route.children[0].path
-          : pathResolve(pathResolve(basePath, route.path), route.children[0].path)
+          : pathResolve(
+              pathResolve(basePath, route.path),
+              route.children[0].path
+            )
       ) as string
     }
 
@@ -82,7 +87,11 @@ export const generateRoutesFn1 = (
 
     // recursive child routes
     if (route.children && data) {
-      data.children = generateRoutesFn1(route.children, keys, pathResolve(basePath, data.path))
+      data.children = generateRoutesFn1(
+        route.children,
+        keys,
+        pathResolve(basePath, data.path)
+      )
     }
     if (data) {
       res.push(data as AppRouteRecordRaw)
@@ -92,7 +101,9 @@ export const generateRoutesFn1 = (
 }
 
 // 后端控制路由生成
-export const generateRoutesFn2 = (routes: AppCustomRouteRecordRaw[]): AppRouteRecordRaw[] => {
+export const generateRoutesFn2 = (
+  routes: AppCustomRouteRecordRaw[]
+): AppRouteRecordRaw[] => {
   const res: AppRouteRecordRaw[] = []
 
   for (const route of routes) {
@@ -100,17 +111,25 @@ export const generateRoutesFn2 = (routes: AppCustomRouteRecordRaw[]): AppRouteRe
       path: route.path,
       name: route.name,
       redirect: route.redirect,
-      meta: route.meta
+      meta: route.meta,
     }
     if (route.component) {
-      const comModule = modules[`../${route.component}.vue`] || modules[`../${route.component}.tsx`]
+      const comModule =
+        modules[`../${route.component}.vue`] ||
+        modules[`../${route.component}.tsx`]
       const component = route.component as string
       if (!comModule && !component.includes('#')) {
-        console.error(`未找到${route.component}.vue文件或${route.component}.tsx文件，请创建`)
+        console.error(
+          `未找到${route.component}.vue文件或${route.component}.tsx文件，请创建`
+        )
       } else {
         // 动态加载路由文件，可根据实际情况进行自定义逻辑
         data.component =
-          component === '#' ? Layout : component.includes('##') ? getParentLayout() : comModule
+          component === '#'
+            ? Layout
+            : component.includes('##')
+            ? getParentLayout()
+            : comModule
       }
     }
     // recursive child routes
@@ -164,7 +183,7 @@ const isMultipleRoute = (route: AppRouteRecordRaw) => {
 const promoteRouteLevel = (route: AppRouteRecordRaw) => {
   let router: Router | null = createRouter({
     routes: [route as RouteRecordRaw],
-    history: createWebHashHistory()
+    history: createWebHashHistory(),
   })
 
   const routes = router.getRoutes()

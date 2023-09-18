@@ -1,6 +1,11 @@
 <template>
   <div class="y--container">
-    <div class="y--container__item" :class="`item--${num}`" v-for="num in 3" :key="num">
+    <div
+      class="y--container__item"
+      :class="`item--${num}`"
+      v-for="num in 3"
+      :key="num"
+    >
       {{ num }}
     </div>
   </div>

@@ -52,7 +52,10 @@ const save = async () => {
 </script>
 
 <template>
-  <ContentDetailWrap :title="t('exampleDemo.edit')" @back="push('/example/example-page')">
+  <ContentDetailWrap
+    :title="t('exampleDemo.edit')"
+    @back="push('/example/example-page')"
+  >
     <Write ref="writeRef" :current-row="currentRow" />
 
     <template #right>
