@@ -7,29 +7,22 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <!--  -->
-  <div class="v_-skeleton-container">
-    <div class="container-box" v-skeleton-style></div>
-    <div class="box" v-skeleton-item-style></div>
-    <div class="container-box" v-skeleton="{ count: 18, loading: loading }">
-      <div
-        class="box"
-        v-skeleton-item
-        v-for="(item, index) in list"
-        :key="index"
-      >
-        {{ item }} - {{ index }}
+  <ContentWrap>
+    <div class="v_-skeleton-container">
+      <div class="container-box" v-skeleton-style></div>
+      <div class="box" v-skeleton-item-style></div>
+      <div class="container-box" v-skeleton="{ count: 18, loading: loading }">
+        <div class="box" v-skeleton-item v-for="(item, index) in list" :key="index">
+          {{ item }} - {{ index }}
+        </div>
       </div>
+      <ElButton type="primary" @click="loadmore">加载更多</ElButton>
     </div>
-    <button @click="loadmore">加载更多</button>
-  </div>
+  </ContentWrap>
 </template>
 
 <script lang="ts" setup>
 import gsap from 'gsap'
-
-const list = ref(null)
-const loading = ref(true)
 
 function animation(config) {
   const { target, direction } = config
@@ -59,11 +52,15 @@ function initAnimate() {
   })
 }
 
-function getList(init = false) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      init
-        ? resolve([
+function useList() {
+  const list = ref(null)
+  const loading = ref(true)
+
+  function getList(init = false) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        init
+          ? resolve([
             'item1',
             'item2',
             'item3',
@@ -83,7 +80,7 @@ function getList(init = false) {
             'item2',
             'item3',
           ])
-        : resolve([
+          : resolve([
             ...list.value,
             'item2',
             'item3',
@@ -92,27 +89,39 @@ function getList(init = false) {
             'item3',
             'item1',
           ])
-    }, 500)
-  })
+      }, 500)
+    })
+  }
+
+  function init() {
+    onMounted(async () => {
+      loading.value = true
+      const result = await getList(true).finally(() => {
+        loading.value = false
+      })
+      list.value = result
+      nextTick(() => {
+        initAnimate()
+      })
+    })
+  }
+  async function loadmore() {
+    const result = await getList()
+    list.value = result
+    nextTick(() => {
+      initAnimate()
+    })
+  }
+  return {
+    list,
+    loading,
+    loadmore,
+    init,
+  }
 }
 
-onMounted(async () => {
-  loading.value = true
-  const result = await getList(true).finally(() => {
-    loading.value = false
-  })
-  list.value = result
-  nextTick(() => {
-    initAnimate()
-  })
-})
-async function loadmore() {
-  const result = await getList()
-  list.value = result
-  nextTick(() => {
-    initAnimate()
-  })
-}
+
+const { list, loading, init, loadmore } = useList()
 </script>
 
 <style lang="less">

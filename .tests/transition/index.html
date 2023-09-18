@@ -1,0 +1,66 @@
+<!--
+ * @Author: wuxs 317009160@qq.com
+ * @Date: 2023-09-13 11:29:54
+ * @LastEditors: wuxs 317009160@qq.com
+ * @LastEditTime: 2023-09-13 11:37:18
+ * @FilePath: \pms-pcd:\studio\vue-project\vue-teaching\transition\index.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./transition.css">
+</head>
+
+<body>
+    <div id="app">
+        <button @click="shafford">切换</button>
+        <transition :name="transitionName" mode="out-in">
+            <component :is="componentName" />
+        </transition>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <script>
+        const { createApp, ref, computed, onMounted } = Vue
+
+        const app = createApp({
+            components: {
+                CompA: {
+                    template: `
+                        <div>A</div>
+                    `
+                },
+                CompB: {
+                    template: `
+                        <div>B</div>
+                    `
+                }
+            },
+            setup() {
+                const transitionName = ref('')
+                const componentName = ref('CompA')
+
+                function shafford() {
+                    componentName.value === 'CompA' ? (componentName.value = 'CompB') : (componentName.value = 'CompA')
+                    transitionName.value = componentName.value === 'CompA' ? 'slide-right' : 'slide-left'
+                }
+          
+                return {
+                    transitionName,
+                    componentName,
+                    shafford
+                }
+            }
+        })
+
+        app.mount('#app')
+    </script>
+</body>
+
+</html>
